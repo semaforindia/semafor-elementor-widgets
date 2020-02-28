@@ -17,6 +17,7 @@ class My_Elementor_Widgets
     protected function __construct()
     {
         require_once('faq.php');
+        require_once('post-carousel.php');
 
         add_action('elementor/widgets/widgets_registered', [$this, 'register_widgets']);
     }
@@ -25,6 +26,7 @@ class My_Elementor_Widgets
     {
         // \Elementor\Plugin::instance()->widgets_manager->register_widget_type(new \Elementor\Elementor_oEmbed_Widget());
         \Elementor\Plugin::instance()->widgets_manager->register_widget_type(new Semafor_FAQ());
+        \Elementor\Plugin::instance()->widgets_manager->register_widget_type(new SemaforPostCarousel());
     }
 }
 
