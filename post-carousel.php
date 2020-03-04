@@ -106,9 +106,6 @@ class SemaforPostCarousel extends \Elementor\Widget_Base
 	//  }
 	
     protected function _register_controls() {
-
-		
-
 		$this->start_controls_section(
 			'section_slides',
 			[
@@ -128,7 +125,7 @@ class SemaforPostCarousel extends \Elementor\Widget_Base
 				'type' => \Elementor\Controls_Manager::COLOR,
 				'default' => '#bbbbbb',
 				'selectors' => [
-					'{{WRAPPER}} {{CURRENT_ITEM}} .custom-slide-bg' => 'background-color: {{VALUE}}',
+					'{{WRAPPER}} {{CURRENT_ITEM}} .owl-slide-bg' => 'background-color: {{VALUE}}',
 				],
 			]
 		);
@@ -138,7 +135,7 @@ class SemaforPostCarousel extends \Elementor\Widget_Base
 				'label' => _x( 'Image', 'Background Control', 'elementor-pro' ),
 				'type' => \Elementor\Controls_Manager::MEDIA,
 				'selectors' => [
-					'{{WRAPPER}} {{CURRENT_ITEM}} .custom-slide-bg' => 'background-image: url({{URL}})',
+					'{{WRAPPER}} {{CURRENT_ITEM}} .owl-slide-bg' => 'background-image: url({{URL}})',
 				],
 			]
 		);
@@ -155,7 +152,7 @@ class SemaforPostCarousel extends \Elementor\Widget_Base
 					'auto' => _x( 'Auto', 'Background Control', 'elementor-pro' ),
 				],
 				'selectors' => [
-					'{{WRAPPER}} {{CURRENT_ITEM}} .custom-slide-bg' => 'background-size: {{VALUE}}',
+					'{{WRAPPER}} {{CURRENT_ITEM}} .owl-slide-bg' => 'background-size: {{VALUE}}',
 				],
 				'conditions' => [
 					'terms' => [
@@ -426,7 +423,7 @@ class SemaforPostCarousel extends \Elementor\Widget_Base
 					],
 				],
 				'selectors' => [
-					'{{WRAPPER}} {{CURRENT_ITEM}} .custom-slide-inner' => 'align-items: {{VALUE}}',
+					'{{WRAPPER}} {{CURRENT_ITEM}} .owl-slide-inner' => 'align-items: {{VALUE}}',
 				],
 				'selectors_dictionary' => [
 					'top' => 'flex-start',
@@ -465,7 +462,7 @@ class SemaforPostCarousel extends \Elementor\Widget_Base
 					],
 				],
 				'selectors' => [
-					'{{WRAPPER}} {{CURRENT_ITEM}} .custom-slide-inner' => 'text-align: {{VALUE}}',
+					'{{WRAPPER}} {{CURRENT_ITEM}} .owl-slide-inner' => 'text-align: {{VALUE}}',
 				],
 				'conditions' => [
 					'terms' => [
@@ -484,9 +481,10 @@ class SemaforPostCarousel extends \Elementor\Widget_Base
 				'label' => __( 'Content Color', 'elementor-pro' ),
 				'type' => \Elementor\Controls_Manager::COLOR,
 				'selectors' => [
-					'{{WRAPPER}} {{CURRENT_ITEM}} .custom-slide-inner .elementor-slide-heading' => 'color: {{VALUE}}',
-					'{{WRAPPER}} {{CURRENT_ITEM}} .custom-slide-inner .elementor-slide-description' => 'color: {{VALUE}}',
-					'{{WRAPPER}} {{CURRENT_ITEM}} .custom-slide-inner .elementor-slide-button' => 'color: {{VALUE}}; border-color: {{VALUE}}',
+					'{{WRAPPER}} {{CURRENT_ITEM}} .owl-slide-inner .elementor-slide-heading' => 'color: {{VALUE}}',
+					'{{WRAPPER}} {{CURRENT_ITEM}} .owl-slide-inner .elementor-slide-description' => 'color: {{VALUE}}',
+					'{{WRAPPER}} {{CURRENT_ITEM}} .owl-slide-inner .elementor-slide-item-description' => 'color: {{VALUE}}',
+					'{{WRAPPER}} {{CURRENT_ITEM}} .owl-slide-inner .elementor-slide-button' => 'color: {{VALUE}}; border-color: {{VALUE}}',
 				],
 				'conditions' => [
 					'terms' => [
@@ -503,7 +501,7 @@ class SemaforPostCarousel extends \Elementor\Widget_Base
 			\Elementor\Group_Control_Text_Shadow::get_type(),
 			[
 				'name' => 'repeater_text_shadow',
-				'selector' => '{{WRAPPER}} {{CURRENT_ITEM}} .swiper-slide-contents',
+				'selector' => '{{WRAPPER}} {{CURRENT_ITEM}} .owl-slide-contents',
 				'conditions' => [
 					'terms' => [
 						[
@@ -529,18 +527,21 @@ class SemaforPostCarousel extends \Elementor\Widget_Base
 					[
 						'heading' => __( 'Slide 1 Heading', 'elementor-pro' ),
 						'description' => __( 'Lorem ipsum dolor sit amet consectetur adipiscing elit dolor', 'elementor-pro' ),
+						'item_description'=>__('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.', 'elementor-pro'),
 						'button_text' => __( 'Click Here', 'elementor-pro' ),
 						'background_color' => '#833ca3',
 					],
 					[
 						'heading' => __( 'Slide 2 Heading', 'elementor-pro' ),
 						'description' => __( 'Lorem ipsum dolor sit amet consectetur adipiscing elit dolor', 'elementor-pro' ),
+						'item_description'=>__('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.', 'elementor-pro'),
 						'button_text' => __( 'Click Here', 'elementor-pro' ),
 						'background_color' => '#4054b2',
 					],
 					[
 						'heading' => __( 'Slide 3 Heading', 'elementor-pro' ),
 						'description' => __( 'Lorem ipsum dolor sit amet consectetur adipiscing elit dolor', 'elementor-pro' ),
+						'item_description'=>__('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.', 'elementor-pro'),
 						'button_text' => __( 'Click Here', 'elementor-pro' ),
 						'background_color' => '#1abc9c',
 					],
@@ -1296,6 +1297,46 @@ class SemaforPostCarousel extends \Elementor\Widget_Base
 		// 	}
 		// 	echo '</dl>';
 		// }
+		$settings = $this->get_settings();
+
+		if ( empty( $settings['slides'] ) ) {
+			return;
+		}
+
+		$this->add_render_attribute( 'button', 'class', [ 'elementor-button', 'elementor-slide-button' ] );
+
+		if ( ! empty( $settings['button_size'] ) ) {
+			$this->add_render_attribute( 'button', 'class', 'elementor-size-' . $settings['button_size'] );
+		}
+
+		$slides = [];
+		$slide_count = 0;
+
+		foreach ( $settings['slides'] as $slide ) {
+			$slide_html = '';
+			$btn_attributes = '';
+			$slide_attributes = '';
+			$slide_element = 'div';
+			$btn_element = 'div';
+			$slide_url = $slide['link']['url'];
+			if ( ! empty( $slide_url ) ) {
+				$this->add_render_attribute( 'slide_link' . $slide_count, 'href', $slide_url );
+
+				if ( $slide['link']['is_external'] ) {
+					$this->add_render_attribute( 'slide_link' . $slide_count, 'target', '_blank' );
+				}
+
+				if ( 'button' === $slide['link_click'] ) {
+					$btn_element = 'a';
+					$btn_attributes = $this->get_render_attribute_string( 'slide_link' . $slide_count );
+				} else {
+					$slide_element = 'a';
+					$slide_attributes = $this->get_render_attribute_string( 'slide_link' . $slide_count );
+				}
+			}
+
+		}
+
 	}
 
 	protected function _content_template() {
