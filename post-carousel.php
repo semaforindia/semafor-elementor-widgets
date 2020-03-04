@@ -1314,66 +1314,7 @@ class SemaforPostCarousel extends \Elementor\Widget_Base
 		$slides = [];
 		$slide_count = 0;
 
-		foreach ($settings['slides'] as $slide) {
-			$slide_html = '';
-			$btn_attributes = '';
-			$slide_attributes = '';
-			$slide_element = 'div';
-			$btn_element = 'div';
-			$slide_url = $slide['link']['url'];
-			if (!empty($slide_url)) {
-				$this->add_render_attribute('slide_link' . $slide_count, 'href', $slide_url);
-
-				if ($slide['link']['is_external']) {
-					$this->add_render_attribute('slide_link' . $slide_count, 'target', '_blank');
-				}
-
-				if ('button' === $slide['link_click']) {
-					$btn_element = 'a';
-					$btn_attributes = $this->get_render_attribute_string('slide_link' . $slide_count);
-				} else {
-					$slide_element = 'a';
-					$slide_attributes = $this->get_render_attribute_string('slide_link' . $slide_count);
-				}
-			}
-		}
-		$slide_html .= '<' . $slide_element . ' class="owl-slide-inner" ' . $slide_attributes . '>';
-		$slide_html .= '<div class="owl-slide-contents">';
-
-		if ($slide['heading']) {
-			$slide_html .= '<div class="elementor-slide-heading">' . $slide['heading'] . '</div>';
-		}
-
-		if ($slide['description']) {
-			$slide_html .= '<div class="elementor-slide-description">' . $slide['description'] . '</div>';
-		}
-		if ($slide['item_description']) {
-			$slide_html .= '<div class="elementor-slide-item-description">' . $slide['item_description'] . '</div>';
-		}
-		if ($slide['button_text']) {
-			$slide_html .= '<' . $btn_element . ' ' . $btn_attributes . ' ' . $this->get_render_attribute_string('button') . '>' . $slide['button_text'] . '</' . $btn_element . '>';
-		}
-
-		$slide_html .= '</div></' . $slide_element . '>';
-
-		if ('yes' === $slide['background_overlay']) {
-			$slide_html = '<div class="elementor-background-overlay"></div>' . $slide_html;
-		}
-
-		$ken_class = '';
-
-		if ($slide['background_ken_burns']) {
-			$ken_class = ' elementor-ken-burns elementor-ken-burns--' . $slide['zoom_direction'];
-		}
-
-		$slide_html = '<div class="owl-slide-bg' . $ken_class . '"></div>' . $slide_html;
-
-		$slides[] = '<div class="elementor-repeater-item-' . $slide['_id'] . ' owl-item">' . $slide_html . '</div>';
-		$slide_count++;
-
-
-
-		$slides_count = count($settings['slides']);
+	
 ?>
 		<div class="owl-carousel">
 			<?php
@@ -1381,10 +1322,28 @@ class SemaforPostCarousel extends \Elementor\Widget_Base
 			foreach ($settings['slides'] as $slide) {
 			?>
 				<div style="background-image: url('<?php echo $slide['background_image']['url'] ?>');">
-					<?php echo $slide['button_text'] ?>
-					<?php ?>
-
+					<?php 
+					echo '<div class="owl-slide-bg' . $ken_class . '"></div>';
+					echo '<div class="owl-slide-inner">';
+							echo '<div class="owl-slide-contents">';
+								if ($slide['heading']) {
+									echo '<div class="elementor-slide-heading">' . $slide['heading'] . '</div>';
+								}
+								if ($slide['description']) {
+									echo '<div class="elementor-slide-description">' . $slide['description'] . '</div>';
+								}
+								if ($slide['item_description']) {
+									echo'<div class="elementor-slide-item-description">' . $slide['item_description'] . '</div>';
+								}
+								if ($slide['button_text']) {
+									echo '<a  href="'.$slide['link']['url'].'" ' . $this->get_render_attribute_string('button') . '>' . $slide['button_text'] . '</a>';
+								}
+								$slides_count = count($settings['slides']);
+						echo '</div>
+					</div>';
+					?>
 				</div>
+				
 
 			<?php
 			}
@@ -1398,48 +1357,29 @@ class SemaforPostCarousel extends \Elementor\Widget_Base
 	protected function _content_template()
 	{
 	?>
-		<# var direction=elementorFrontend.config.is_rtl ? 'rtl' : 'ltr' , next=elementorFrontend.config.is_rtl ? 'right' : 'left' , prev=elementorFrontend.config.is_rtl ? 'left' : 'right' , navi=settings.navigation, showDots=( 'dots'===navi || 'both'===navi ), showArrows=( 'arrows'===navi || 'both'===navi ), buttonSize=settings.button_size; #>
-			<div class="elementor-owl">
-				<div class="elementor-slides-wrapper elementor-main-owl owl-carousel" dir="{{ direction }}" data-animation="{{ settings.content_animation }}">
-					<div class="owl-wrapper elementor-slides">
-						<# jQuery.each( settings.slides, function( index, slide ) { #>
-							<div class="elementor-repeater-item-{{ slide._id }} owl-item">
-								<# var kenClass='' ; if ( '' !=slide.background_ken_burns ) { kenClass=' elementor-ken-burns elementor-ken-burns--' + slide.zoom_direction; } #>
-									<div class="owl-slide-bg{{ kenClass }}"></div>
-									<# if ( 'yes'===slide.background_overlay ) { #>
-										<div class="elementor-background-overlay"></div>
-										<# } #>
-											<div class="owl-slide-inner">
-												<div class="owl-slide-contents">
-													<# if ( slide.heading ) { #>
-														<div class="elementor-slide-heading">{{{ slide.heading }}}</div>
-														<# } if ( slide.description ) { #>
-															<div class="elementor-slide-description">{{{ slide.description }}}</div>
-															<# } if ( slide.button_text ) { #>
-																<div class="elementor-button elementor-slide-button elementor-size-{{ buttonSize }}">{{{ slide.button_text }}}</div>
-																<# } #>
-												</div>
-											</div>
+		
+					
+			<!-- <div class="owl-carousel">
+				
+				
+					<div class="elementor-repeater-item-{{ slide._id }} owl-item">
+					<# jQuery.each( settings.slides, function( index, slide ) { #>
+						<div class="owl-slide-inner">
+							<div class="owl-slide-contents">
+								<# if ( slide.heading ) { #>
+									<div class="elementor-slide-heading">{{{ slide.heading }}}</div>
+									<# } if ( slide.description ) { #>
+										<div class="elementor-slide-description">{{{ slide.description }}}</div>
+										<# } if ( slide.button_text ) { #>
+											<div class="elementor-button elementor-slide-button elementor-size-{{ buttonSize }}">{{{ slide.button_text }}}</div>
+											<# } #>
 							</div>
-							<# } ); #>
+						</div>
+						<# }); #>
 					</div>
-					<# if ( 1 < settings.slides.length ) { #>
-						<# if ( showDots ) { #>
-							<div class="owl-dots"></div>
-							<# } #>
-								<# if ( showArrows ) { #>
-									<div class="elementor-owl-button elementor-owl-button-prev owl-prev">
-										<i class="eicon-chevron-{{ prev }}" aria-hidden="true"></i>
-										<span class="elementor-screen-only"><?php _e('Previous', 'elementor-pro'); ?></span>
-									</div>
-									<div class="elementor-owl-button elementor-owl-button-next owl-next">
-										<i class="eicon-chevron-{{ next }}" aria-hidden="true"></i>
-										<span class="elementor-screen-only"><?php _e('Next', 'elementor-pro'); ?></span>
-									</div>
-									<# } #>
-										<# } #>
-				</div>
-			</div>
+				
+					
+			</div> -->
 			<!-- <div class="owl-carousel">
 			<div> Your Content </div>
 			<div> Your Content </div>
