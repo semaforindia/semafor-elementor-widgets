@@ -1298,16 +1298,7 @@ class SemaforPostCarousel extends \Elementor\Widget_Base
 
 	protected function render()
 	{
-		// $settings = $this->get_settings_for_display();
 
-		// if ( $settings['list'] ) {
-		// 	echo '<dl>';
-		// 	foreach (  $settings['list'] as $item ) {
-		// 		echo '<dt class="elementor-repeater-item-' . $item['_id'] . '">' . $item['list_title'] . '</dt>';
-		// 		echo '<dd>' . $item['list_content'] . '</dd>';
-		// 	}
-		// 	echo '</dl>';
-		// }
 		$settings = $this->get_settings();
 
 		if (empty($settings['slides'])) {
@@ -1349,151 +1340,107 @@ class SemaforPostCarousel extends \Elementor\Widget_Base
 		$slide_html .= '<' . $slide_element . ' class="owl-slide-inner" ' . $slide_attributes . '>';
 		$slide_html .= '<div class="owl-slide-contents">';
 
-			if ( $slide['heading'] ) {
-				$slide_html .= '<div class="elementor-slide-heading">' . $slide['heading'] . '</div>';
-			}
-
-			if ( $slide['description'] ) {
-				$slide_html .= '<div class="elementor-slide-description">' . $slide['description'] . '</div>';
-			}
-			if ( $slide['item_description'] ) {
-				$slide_html .= '<div class="elementor-slide-item-description">' . $slide['item_description'] . '</div>';
-			}
-			if ( $slide['button_text'] ) {
-				$slide_html .= '<' . $btn_element . ' ' . $btn_attributes . ' ' . $this->get_render_attribute_string( 'button' ) . '>' . $slide['button_text'] . '</' . $btn_element . '>';
-			}
-
-			$slide_html .= '</div></' . $slide_element . '>';
-
-			if ( 'yes' === $slide['background_overlay'] ) {
-				$slide_html = '<div class="elementor-background-overlay"></div>' . $slide_html;
-			}
-
-			$ken_class = '';
-
-			if ( $slide['background_ken_burns'] ) {
-				$ken_class = ' elementor-ken-burns elementor-ken-burns--' . $slide['zoom_direction'];
-			}
-
-			$slide_html = '<div class="owl-slide-bg' . $ken_class . '"></div>' . $slide_html;
-
-			$slides[] = '<div class="elementor-repeater-item-' . $slide['_id'] . ' owl-item">' . $slide_html . '</div>';
-			$slide_count++;
-		
-
-		$prev = 'left';
-		$next = 'right';
-		$direction = 'ltr';
-
-		if ( is_rtl() ) {
-			$prev = 'right';
-			$next = 'left';
-			$direction = 'rtl';
+		if ($slide['heading']) {
+			$slide_html .= '<div class="elementor-slide-heading">' . $slide['heading'] . '</div>';
 		}
 
-		$show_dots = ( in_array( $settings['navigation'], [ 'dots', 'both' ] ) );
-		$show_arrows = ( in_array( $settings['navigation'], [ 'arrows', 'both' ] ) );
+		if ($slide['description']) {
+			$slide_html .= '<div class="elementor-slide-description">' . $slide['description'] . '</div>';
+		}
+		if ($slide['item_description']) {
+			$slide_html .= '<div class="elementor-slide-item-description">' . $slide['item_description'] . '</div>';
+		}
+		if ($slide['button_text']) {
+			$slide_html .= '<' . $btn_element . ' ' . $btn_attributes . ' ' . $this->get_render_attribute_string('button') . '>' . $slide['button_text'] . '</' . $btn_element . '>';
+		}
 
-		$slides_count = count( $settings['slides'] );
-		?>
-		<div class="elementor-owl">
-			<div class="elementor-slides-wrapper elementor-main-owl owl-carousel" dir="<?php echo $direction; ?>" data-animation="<?php echo $settings['content_animation']; ?>">
-				<div class="owl-wrapper elementor-slides">
-					<?php echo implode( '', $slides ); ?>
+		$slide_html .= '</div></' . $slide_element . '>';
+
+		if ('yes' === $slide['background_overlay']) {
+			$slide_html = '<div class="elementor-background-overlay"></div>' . $slide_html;
+		}
+
+		$ken_class = '';
+
+		if ($slide['background_ken_burns']) {
+			$ken_class = ' elementor-ken-burns elementor-ken-burns--' . $slide['zoom_direction'];
+		}
+
+		$slide_html = '<div class="owl-slide-bg' . $ken_class . '"></div>' . $slide_html;
+
+		$slides[] = '<div class="elementor-repeater-item-' . $slide['_id'] . ' owl-item">' . $slide_html . '</div>';
+		$slide_count++;
+
+
+
+		$slides_count = count($settings['slides']);
+?>
+		<div class="owl-carousel">
+			<?php
+
+			foreach ($settings['slides'] as $slide) {
+			?>
+				<div style="background-image: url('<?php echo $slide['background_image']['url'] ?>');">
+					<?php echo $slide['button_text'] ?>
+					<?php ?>
+
 				</div>
-				<?php if ( 1 < $slides_count ) : ?>
-					<?php if ( $show_dots ) : ?>
-						<div class="owl-dots"></div>
-					<?php endif; ?>
-					<?php if ( $show_arrows ) : ?>
-						<div class="owl-nav">
-							<div class="elementor-owl-button elementor-owl-button-prev owl-prev">
-								<i class="eicon-chevron-<?php echo $prev; ?>" aria-hidden="true"></i>
-								<span class="elementor-screen-only"><?php _e( 'Previous', 'elementor-pro' ); ?></span>
-							</div>
-							<div class="elementor-owl-button elementor-owl-button-next owl-next">
-								<i class="eicon-chevron-<?php echo $next; ?>" aria-hidden="true"></i>
-								<span class="elementor-screen-only"><?php _e( 'Next', 'elementor-pro' ); ?></span>
-							</div>
-						</div>
-					<?php endif; ?>
-				<?php endif; ?>
-			</div>
+
+			<?php
+			}
+
+			?>
 		</div>
-		<?php
-		// echo '
-		// <div class="owl-carousel">
-		//   <div> Your Content </div>
-		//   <div> Your Content </div>
-		//   <div> Your Content </div>
-		//   <div> Your Content </div>
-		//   <div> Your Content </div>
-		//   <div> Your Content </div>
-		//   <div> Your Content </div>
-		// </div>';
+	<?php
+
 	}
 
-	protected function _content_template(){
-?>
-<#
-			var direction        = elementorFrontend.config.is_rtl ? 'rtl' : 'ltr',
-				next            = elementorFrontend.config.is_rtl ? 'right' : 'left',
-				prev              = elementorFrontend.config.is_rtl ? 'left' : 'right',
-				navi             = settings.navigation,
-				showDots         = ( 'dots' === navi || 'both' === navi ),
-				showArrows       = ( 'arrows' === navi || 'both' === navi ),
-				buttonSize       = settings.button_size;
-		#>
-		<div class="elementor-owl">
-			<div class="elementor-slides-wrapper elementor-main-owl owl-carousel" dir="{{ direction }}" data-animation="{{ settings.content_animation }}">
-				<div class="owl-wrapper elementor-slides">
-					<# jQuery.each( settings.slides, function( index, slide ) { #>
-						<div class="elementor-repeater-item-{{ slide._id }} owl-item">
-							<#
-							var kenClass = '';
-
-							if ( '' != slide.background_ken_burns ) {
-								kenClass = ' elementor-ken-burns elementor-ken-burns--' + slide.zoom_direction;
-							}
-							#>
-							<div class="owl-slide-bg{{ kenClass }}"></div>
-							<# if ( 'yes' === slide.background_overlay ) { #>
-							<div class="elementor-background-overlay"></div>
-							<# } #>
-							<div class="owl-slide-inner">
-								<div class="owl-slide-contents">
-									<# if ( slide.heading ) { #>
-										<div class="elementor-slide-heading">{{{ slide.heading }}}</div>
-									<# }
-									if ( slide.description ) { #>
-										<div class="elementor-slide-description">{{{ slide.description }}}</div>
-									<# }
-									if ( slide.button_text ) { #>
-										<div class="elementor-button elementor-slide-button elementor-size-{{ buttonSize }}">{{{ slide.button_text }}}</div>
-									<# } #>
-								</div>
+	protected function _content_template()
+	{
+	?>
+		<# var direction=elementorFrontend.config.is_rtl ? 'rtl' : 'ltr' , next=elementorFrontend.config.is_rtl ? 'right' : 'left' , prev=elementorFrontend.config.is_rtl ? 'left' : 'right' , navi=settings.navigation, showDots=( 'dots'===navi || 'both'===navi ), showArrows=( 'arrows'===navi || 'both'===navi ), buttonSize=settings.button_size; #>
+			<div class="elementor-owl">
+				<div class="elementor-slides-wrapper elementor-main-owl owl-carousel" dir="{{ direction }}" data-animation="{{ settings.content_animation }}">
+					<div class="owl-wrapper elementor-slides">
+						<# jQuery.each( settings.slides, function( index, slide ) { #>
+							<div class="elementor-repeater-item-{{ slide._id }} owl-item">
+								<# var kenClass='' ; if ( '' !=slide.background_ken_burns ) { kenClass=' elementor-ken-burns elementor-ken-burns--' + slide.zoom_direction; } #>
+									<div class="owl-slide-bg{{ kenClass }}"></div>
+									<# if ( 'yes'===slide.background_overlay ) { #>
+										<div class="elementor-background-overlay"></div>
+										<# } #>
+											<div class="owl-slide-inner">
+												<div class="owl-slide-contents">
+													<# if ( slide.heading ) { #>
+														<div class="elementor-slide-heading">{{{ slide.heading }}}</div>
+														<# } if ( slide.description ) { #>
+															<div class="elementor-slide-description">{{{ slide.description }}}</div>
+															<# } if ( slide.button_text ) { #>
+																<div class="elementor-button elementor-slide-button elementor-size-{{ buttonSize }}">{{{ slide.button_text }}}</div>
+																<# } #>
+												</div>
+											</div>
 							</div>
-						</div>
-					<# } ); #>
+							<# } ); #>
+					</div>
+					<# if ( 1 < settings.slides.length ) { #>
+						<# if ( showDots ) { #>
+							<div class="owl-dots"></div>
+							<# } #>
+								<# if ( showArrows ) { #>
+									<div class="elementor-owl-button elementor-owl-button-prev owl-prev">
+										<i class="eicon-chevron-{{ prev }}" aria-hidden="true"></i>
+										<span class="elementor-screen-only"><?php _e('Previous', 'elementor-pro'); ?></span>
+									</div>
+									<div class="elementor-owl-button elementor-owl-button-next owl-next">
+										<i class="eicon-chevron-{{ next }}" aria-hidden="true"></i>
+										<span class="elementor-screen-only"><?php _e('Next', 'elementor-pro'); ?></span>
+									</div>
+									<# } #>
+										<# } #>
 				</div>
-				<# if ( 1 < settings.slides.length ) { #>
-					<# if ( showDots ) { #>
-						<div class="owl-dots"></div>
-					<# } #>
-					<# if ( showArrows ) { #>
-						<div class="elementor-owl-button elementor-owl-button-prev owl-prev">
-							<i class="eicon-chevron-{{ prev }}" aria-hidden="true"></i>
-							<span class="elementor-screen-only"><?php _e( 'Previous', 'elementor-pro' ); ?></span>
-						</div>
-						<div class="elementor-owl-button elementor-owl-button-next owl-next">
-							<i class="eicon-chevron-{{ next }}" aria-hidden="true"></i>
-							<span class="elementor-screen-only"><?php _e( 'Next', 'elementor-pro' ); ?></span>
-						</div>
-					<# } #>
-				<# } #>
 			</div>
-		</div>
-		<!-- <div class="owl-carousel">
+			<!-- <div class="owl-carousel">
 			<div> Your Content </div>
 			<div> Your Content </div>
 			<div> Your Content </div>
@@ -1503,6 +1450,6 @@ class SemaforPostCarousel extends \Elementor\Widget_Base
 			<div> Your Content </div>
 		</div> -->
 
-<?php
+	<?php
 	}
 }
