@@ -24,7 +24,6 @@ class My_Elementor_Widgets
 
     public function register_widgets()
     {
-        // \Elementor\Plugin::instance()->widgets_manager->register_widget_type(new \Elementor\Elementor_oEmbed_Widget());
         \Elementor\Plugin::instance()->widgets_manager->register_widget_type(new Semafor_FAQ());
         \Elementor\Plugin::instance()->widgets_manager->register_widget_type(new SemaforPostCarousel());
     }
