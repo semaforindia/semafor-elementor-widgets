@@ -578,7 +578,7 @@ class SemaforPostCarousel extends \Elementor\Widget_Base
 				],
 				'size_units' => ['px', 'vh', 'em'],
 				'selectors' => [
-					'{{WRAPPER}} .swiper-slide' => 'height: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .owl-item' => 'height: {{SIZE}}{{UNIT}};',
 				],
 				'separator' => 'before',
 			]
@@ -749,7 +749,7 @@ class SemaforPostCarousel extends \Elementor\Widget_Base
 					'unit' => '%',
 				],
 				'selectors' => [
-					'{{WRAPPER}} .swiper-slide-contents' => 'max-width: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .owl-slide-contents' => 'max-width: {{SIZE}}{{UNIT}};',
 				],
 			]
 		);
@@ -760,7 +760,7 @@ class SemaforPostCarousel extends \Elementor\Widget_Base
 				'type' => Controls_Manager::DIMENSIONS,
 				'size_units' => ['px', 'em', '%'],
 				'selectors' => [
-					'{{WRAPPER}} .swiper-slide-inner' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .owl-slide-inner' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 			]
 		);
@@ -834,7 +834,7 @@ class SemaforPostCarousel extends \Elementor\Widget_Base
 				],
 				'default' => 'center',
 				'selectors' => [
-					'{{WRAPPER}} .swiper-slide-inner' => 'text-align: {{VALUE}}',
+					'{{WRAPPER}} .owl-slide-inner' => 'text-align: {{VALUE}}',
 				],
 			]
 		);
@@ -842,7 +842,7 @@ class SemaforPostCarousel extends \Elementor\Widget_Base
 			Group_Control_Text_Shadow::get_type(),
 			[
 				'name' => 'text_shadow',
-				'selector' => '{{WRAPPER}} .swiper-slide-contents',
+				'selector' => '{{WRAPPER}} .owl-slide-contents',
 			]
 		);
 
@@ -867,7 +867,7 @@ class SemaforPostCarousel extends \Elementor\Widget_Base
 					],
 				],
 				'selectors' => [
-					'{{WRAPPER}} .swiper-slide-inner .elementor-slide-heading:not(:last-child)' => 'margin-bottom: {{SIZE}}{{UNIT}}',
+					'{{WRAPPER}} .owl-slide-inner .elementor-slide-heading:not(:last-child)' => 'margin-bottom: {{SIZE}}{{UNIT}}',
 				],
 			]
 		);
@@ -1206,7 +1206,7 @@ class SemaforPostCarousel extends \Elementor\Widget_Base
 					],
 				],
 				'selectors' => [
-					'{{WRAPPER}} .elementor-swiper-button' => 'font-size: {{SIZE}}{{UNIT}}',
+					'{{WRAPPER}} .elementor-owl-button' => 'font-size: {{SIZE}}{{UNIT}}',
 				],
 				'condition' => [
 					'navigation' => ['arrows', 'both'],
@@ -1220,7 +1220,7 @@ class SemaforPostCarousel extends \Elementor\Widget_Base
 				'label' => __('Arrows Color', 'elementor-pro'),
 				'type' => Controls_Manager::COLOR,
 				'selectors' => [
-					'{{WRAPPER}} .elementor-swiper-button' => 'color: {{VALUE}}',
+					'{{WRAPPER}} .elementor-owl-button' => 'color: {{VALUE}}',
 				],
 				'condition' => [
 					'navigation' => ['arrows', 'both'],
@@ -1268,11 +1268,11 @@ class SemaforPostCarousel extends \Elementor\Widget_Base
 						'max' => 15,
 					],
 				],
-				'selectors' => [
-					'{{WRAPPER}} .swiper-pagination-bullet' => 'height: {{SIZE}}{{UNIT}}; width: {{SIZE}}{{UNIT}}',
-					'{{WRAPPER}} .swiper-container-horizontal .swiper-pagination-progressbar' => 'height: {{SIZE}}{{UNIT}}',
-					'{{WRAPPER}} .swiper-pagination-fraction' => 'font-size: {{SIZE}}{{UNIT}}',
-				],
+				// 'selectors' => [
+				// 	'{{WRAPPER}} .swiper-pagination-bullet' => 'height: {{SIZE}}{{UNIT}}; width: {{SIZE}}{{UNIT}}',
+				// 	'{{WRAPPER}} .swiper-container-horizontal .swiper-pagination-progressbar' => 'height: {{SIZE}}{{UNIT}}',
+				// 	'{{WRAPPER}} .swiper-pagination-fraction' => 'font-size: {{SIZE}}{{UNIT}}',
+				// ],
 				'condition' => [
 					'navigation' => ['dots', 'both'],
 				],
@@ -1285,7 +1285,7 @@ class SemaforPostCarousel extends \Elementor\Widget_Base
 				'label' => __('Dots Color', 'elementor-pro'),
 				'type' => Controls_Manager::COLOR,
 				'selectors' => [
-					'{{WRAPPER}} .swiper-pagination-bullet-active' => 'background-color: {{VALUE}};',
+					'{{WRAPPER}} .owl-dot .active' => 'background-color: {{VALUE}};',
 				],
 				'condition' => [
 					'navigation' => ['dots', 'both'],
@@ -1346,31 +1346,162 @@ class SemaforPostCarousel extends \Elementor\Widget_Base
 				}
 			}
 		}
+		$slide_html .= '<' . $slide_element . ' class="owl-slide-inner" ' . $slide_attributes . '>';
+		$slide_html .= '<div class="owl-slide-contents">';
 
-		echo '
-		<div class="owl-carousel">
-		  <div> Your Content </div>
-		  <div> Your Content </div>
-		  <div> Your Content </div>
-		  <div> Your Content </div>
-		  <div> Your Content </div>
-		  <div> Your Content </div>
-		  <div> Your Content </div>
-		</div>';
+			if ( $slide['heading'] ) {
+				$slide_html .= '<div class="elementor-slide-heading">' . $slide['heading'] . '</div>';
+			}
+
+			if ( $slide['description'] ) {
+				$slide_html .= '<div class="elementor-slide-description">' . $slide['description'] . '</div>';
+			}
+			if ( $slide['item_description'] ) {
+				$slide_html .= '<div class="elementor-slide-item-description">' . $slide['item_description'] . '</div>';
+			}
+			if ( $slide['button_text'] ) {
+				$slide_html .= '<' . $btn_element . ' ' . $btn_attributes . ' ' . $this->get_render_attribute_string( 'button' ) . '>' . $slide['button_text'] . '</' . $btn_element . '>';
+			}
+
+			$slide_html .= '</div></' . $slide_element . '>';
+
+			if ( 'yes' === $slide['background_overlay'] ) {
+				$slide_html = '<div class="elementor-background-overlay"></div>' . $slide_html;
+			}
+
+			$ken_class = '';
+
+			if ( $slide['background_ken_burns'] ) {
+				$ken_class = ' elementor-ken-burns elementor-ken-burns--' . $slide['zoom_direction'];
+			}
+
+			$slide_html = '<div class="owl-slide-bg' . $ken_class . '"></div>' . $slide_html;
+
+			$slides[] = '<div class="elementor-repeater-item-' . $slide['_id'] . ' owl-item">' . $slide_html . '</div>';
+			$slide_count++;
+		
+
+		$prev = 'left';
+		$next = 'right';
+		$direction = 'ltr';
+
+		if ( is_rtl() ) {
+			$prev = 'right';
+			$next = 'left';
+			$direction = 'rtl';
+		}
+
+		$show_dots = ( in_array( $settings['navigation'], [ 'dots', 'both' ] ) );
+		$show_arrows = ( in_array( $settings['navigation'], [ 'arrows', 'both' ] ) );
+
+		$slides_count = count( $settings['slides'] );
+		?>
+		<div class="elementor-owl">
+			<div class="elementor-slides-wrapper elementor-main-owl owl-carousel" dir="<?php echo $direction; ?>" data-animation="<?php echo $settings['content_animation']; ?>">
+				<div class="owl-wrapper elementor-slides">
+					<?php echo implode( '', $slides ); ?>
+				</div>
+				<?php if ( 1 < $slides_count ) : ?>
+					<?php if ( $show_dots ) : ?>
+						<div class="owl-dots"></div>
+					<?php endif; ?>
+					<?php if ( $show_arrows ) : ?>
+						<div class="owl-nav">
+							<div class="elementor-owl-button elementor-owl-button-prev owl-prev">
+								<i class="eicon-chevron-<?php echo $prev; ?>" aria-hidden="true"></i>
+								<span class="elementor-screen-only"><?php _e( 'Previous', 'elementor-pro' ); ?></span>
+							</div>
+							<div class="elementor-owl-button elementor-owl-button-next owl-next">
+								<i class="eicon-chevron-<?php echo $next; ?>" aria-hidden="true"></i>
+								<span class="elementor-screen-only"><?php _e( 'Next', 'elementor-pro' ); ?></span>
+							</div>
+						</div>
+					<?php endif; ?>
+				<?php endif; ?>
+			</div>
+		</div>
+		<?php
+		// echo '
+		// <div class="owl-carousel">
+		//   <div> Your Content </div>
+		//   <div> Your Content </div>
+		//   <div> Your Content </div>
+		//   <div> Your Content </div>
+		//   <div> Your Content </div>
+		//   <div> Your Content </div>
+		//   <div> Your Content </div>
+		// </div>';
 	}
 
-	protected function _content_template()
-	{
+	protected function _content_template(){
 ?>
-		<div class="owl-carousel">
-			<div> Your Content </div>
-			<div> Your Content </div>
-			<div> Your Content </div>
-			<div> Your Content </div>
-			<div> Your Content </div>
-			<div> Your Content </div>
-			<div> Your Content </div>
+<#
+			var direction        = elementorFrontend.config.is_rtl ? 'rtl' : 'ltr',
+				next            = elementorFrontend.config.is_rtl ? 'right' : 'left',
+				prev              = elementorFrontend.config.is_rtl ? 'left' : 'right',
+				navi             = settings.navigation,
+				showDots         = ( 'dots' === navi || 'both' === navi ),
+				showArrows       = ( 'arrows' === navi || 'both' === navi ),
+				buttonSize       = settings.button_size;
+		#>
+		<div class="elementor-owl">
+			<div class="elementor-slides-wrapper elementor-main-owl owl-carousel" dir="{{ direction }}" data-animation="{{ settings.content_animation }}">
+				<div class="owl-wrapper elementor-slides">
+					<# jQuery.each( settings.slides, function( index, slide ) { #>
+						<div class="elementor-repeater-item-{{ slide._id }} owl-item">
+							<#
+							var kenClass = '';
+
+							if ( '' != slide.background_ken_burns ) {
+								kenClass = ' elementor-ken-burns elementor-ken-burns--' + slide.zoom_direction;
+							}
+							#>
+							<div class="owl-slide-bg{{ kenClass }}"></div>
+							<# if ( 'yes' === slide.background_overlay ) { #>
+							<div class="elementor-background-overlay"></div>
+							<# } #>
+							<div class="owl-slide-inner">
+								<div class="owl-slide-contents">
+									<# if ( slide.heading ) { #>
+										<div class="elementor-slide-heading">{{{ slide.heading }}}</div>
+									<# }
+									if ( slide.description ) { #>
+										<div class="elementor-slide-description">{{{ slide.description }}}</div>
+									<# }
+									if ( slide.button_text ) { #>
+										<div class="elementor-button elementor-slide-button elementor-size-{{ buttonSize }}">{{{ slide.button_text }}}</div>
+									<# } #>
+								</div>
+							</div>
+						</div>
+					<# } ); #>
+				</div>
+				<# if ( 1 < settings.slides.length ) { #>
+					<# if ( showDots ) { #>
+						<div class="owl-dots"></div>
+					<# } #>
+					<# if ( showArrows ) { #>
+						<div class="elementor-owl-button elementor-owl-button-prev owl-prev">
+							<i class="eicon-chevron-{{ prev }}" aria-hidden="true"></i>
+							<span class="elementor-screen-only"><?php _e( 'Previous', 'elementor-pro' ); ?></span>
+						</div>
+						<div class="elementor-owl-button elementor-owl-button-next owl-next">
+							<i class="eicon-chevron-{{ next }}" aria-hidden="true"></i>
+							<span class="elementor-screen-only"><?php _e( 'Next', 'elementor-pro' ); ?></span>
+						</div>
+					<# } #>
+				<# } #>
+			</div>
 		</div>
+		<!-- <div class="owl-carousel">
+			<div> Your Content </div>
+			<div> Your Content </div>
+			<div> Your Content </div>
+			<div> Your Content </div>
+			<div> Your Content </div>
+			<div> Your Content </div>
+			<div> Your Content </div>
+		</div> -->
 
 <?php
 	}
