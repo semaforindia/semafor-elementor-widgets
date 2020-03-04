@@ -1,6 +1,6 @@
 {
     "version": 3,
-    "mappings": "AAAA,AAEQ,QAFA,CACJ,UAAU,CACN,QAAQ,AAAC,CACL,OAAO,CAAE,MAAM,CAClB",
+    "mappings": "AAAA,AACI,aADS,CACT,SAAS,AAAC,CACN,MAAM,CAAE,KAAK,CAChB",
     "sources": [
         "semafor-elementor-widgets.scss"
     ],

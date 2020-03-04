@@ -278,7 +278,7 @@ final class SemaforElementorWidgets
     {
         // enqueue all our scripts
         wp_enqueue_style('semafor-elementor-widgets-global-style', plugins_url('/assets/css/semafor-elementor-widgets.css', __FILE__));
-        wp_enqueue_script('semafor-elementor-widgets-global-js', plugins_url('/assets/css/semafor-elementor-widgets.js', __FILE__));
+        wp_enqueue_script('semafor-elementor-widgets-global-js', plugins_url('/assets/js/semafor-elementor-widgets.js', __FILE__));
     }
 }
 
