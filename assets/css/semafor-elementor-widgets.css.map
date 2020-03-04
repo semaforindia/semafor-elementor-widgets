@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AAEQ,QAFA,CACJ,UAAU,CACN,QAAQ,AAAC,CACL,OAAO,CAAE,MAAM,CAClB",
+    "sources": [
+        "semafor-elementor-widgets.scss"
+    ],
+    "names": [],
+    "file": "semafor-elementor-widgets.css"
+}
