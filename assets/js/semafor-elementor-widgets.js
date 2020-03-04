@@ -1,1 +1,3 @@
-console.log("Hello");
+$(document).ready(function() {
+  $(".owl-carousel").owlCarousel();
+});
