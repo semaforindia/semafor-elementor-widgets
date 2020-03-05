@@ -158,6 +158,7 @@ final class SemaforElementorWidgets
 
         // Adding Assets
         add_action('wp_enqueue_scripts', array($this, 'enqueue'));
+        add_action('admin_enqueue_scripts', array($this, 'admin_enqueue'));
     }
 
     /**
@@ -248,11 +249,13 @@ final class SemaforElementorWidgets
 
         // Include Widget files
         require_once(__DIR__ . '/widgets/faq.php');
-        require_once(__DIR__ . '/widgets/post-carousel.php');
+        // require_once(__DIR__ . '/widgets/post-carousel.php');
+        require_once(__DIR__ . '/widgets/slider.php');
 
         // Register widget
         \Elementor\Plugin::instance()->widgets_manager->register_widget_type(new Semafor_FAQ());
-        \Elementor\Plugin::instance()->widgets_manager->register_widget_type(new SemaforPostCarousel());
+        // \Elementor\Plugin::instance()->widgets_manager->register_widget_type(new SemaforPostCarousel());
+        \Elementor\Plugin::instance()->widgets_manager->register_widget_type(new Slider());
     }
 
     /**
@@ -280,13 +283,25 @@ final class SemaforElementorWidgets
         wp_enqueue_style('owl-carousel-css', plugins_url('/assets/lib/owl-carousel/owl.carousel.min.css', __FILE__));
         wp_enqueue_style('owl-carousel-theme-style', plugins_url('/assets/lib/owl-carousel/owl.theme.default.css', __FILE__));
         wp_enqueue_style('semafor-elementor-widgets-global-style', plugins_url('/assets/css/semafor-elementor-widgets.css', __FILE__));
+        
 
 
 
-        // wp_enqueue_script('jquery', 'https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js', array(), null, true);
         wp_enqueue_script('jQuery', plugins_url('/assets/lib/jQuery/jquery-3.4.1.min.js', __FILE__));
         wp_enqueue_script('owl-carousel-js', plugins_url('/assets/lib/owl-carousel/owl.carousel.min.js', __FILE__));
         wp_enqueue_script('semafor-elementor-widgets-global-js', plugins_url('/assets/js/semafor-elementor-widgets.js', __FILE__));
+       
+    }
+    public function admin_enqueue()
+    {
+       
+        admin_enqueue_style('owl-carousel-css', plugins_url('/assets/lib/owl-carousel/owl.carousel.min.css', __FILE__));
+        admin_enqueue_style('owl-carousel-theme-style', plugins_url('/assets/lib/owl-carousel/owl.theme.default.css', __FILE__));
+        admin_enqueue_style('semafor-elementor-widgets-global-style', plugins_url('/assets/css/semafor-elementor-widgets.css', __FILE__));
+
+        admin_enqueue_script('jQuery', plugins_url('/assets/lib/jQuery/jquery-3.4.1.min.js', __FILE__));
+        admin_enqueue_script('owl-carousel-js', plugins_url('/assets/lib/owl-carousel/owl.carousel.min.js', __FILE__));
+        admin_enqueue_script('semafor-elementor-widgets-global-js', plugins_url('/assets/js/semafor-elementor-widgets.js', __FILE__));
     }
 }
 
