@@ -1,8 +1,8 @@
 $(document).ready(function() {
-  $(".owl-carousel").owlCarousel({
-    items:1,
-    margin:30,
-    stagePadding:30,
-    smartSpeed:450
-  });
+  var $carousel = $("[data-owl-carousel]");
+  if ($carousel.length) {
+    $carousel.each(function(index, el) {
+      $(this).owlCarousel($(this).data("owl-carousel"));
+    });
+  }
 });
