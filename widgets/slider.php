@@ -587,7 +587,55 @@ class Slider extends \Elementor\Widget_Base
 				'type' => \Elementor\Controls_Manager::SECTION,
 			]
 		);
+		$slides_to_show = range( 1, 10 );
 
+		$slides_to_show = array_combine( $slides_to_show, $slides_to_show );
+
+		$this->add_responsive_control(
+			'slides_to_show',
+			[
+				'label' => __( 'Slides to Show', 'elementor' ),
+				'type' => Controls_Manager::SELECT,
+				'options' => [
+					'' => __( 'Default', 'elementor' ),
+				] + $slides_to_show,
+				'frontend_available' => true,
+			]
+		);
+
+		$this->add_control(
+			'slides_to_scroll',
+			[
+				'label' => __( 'Slides to Scroll', 'elementor' ),
+				'type' => Controls_Manager::SELECT,
+				'default' => '2',
+				'options' => $slides_to_show,
+				'condition' => [
+					'slides_to_show!' => '1',
+				],
+				'frontend_available' => true,
+			]
+		);
+		$this->add_responsive_control(
+			'slides_margin',
+			[
+				'label' => __( 'Margin', 'elementor-pro' ),
+				'type' => Controls_Manager::DIMENSIONS,
+				'size_units' => [ 'px', 'em', '%' ],
+				'selectors' => [
+					'{{WRAPPER}} .owl-slide-inner' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+			]
+		);
+		$this->add_control(
+			'infinite',
+			[
+				'label' => __('Infinite Loop', 'elementor-pro'),
+				'type' => \Elementor\Controls_Manager::SWITCHER,
+				'default' => 'yes',
+				'frontend_available' => true,
+			]
+		);
 		$this->add_control(
 			'navigation',
 			[
@@ -656,15 +704,7 @@ class Slider extends \Elementor\Widget_Base
 			]
 		);
 
-		$this->add_control(
-			'infinite',
-			[
-				'label' => __('Infinite Loop', 'elementor-pro'),
-				'type' => \Elementor\Controls_Manager::SWITCHER,
-				'default' => 'yes',
-				'frontend_available' => true,
-			]
-		);
+		
 
 		$this->add_control(
 			'transition',

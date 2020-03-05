@@ -292,16 +292,16 @@ final class SemaforElementorWidgets
         wp_enqueue_script('semafor-elementor-widgets-global-js', plugins_url('/assets/js/semafor-elementor-widgets.js', __FILE__));
        
     }
-    public function admin_enqueue()
+    public function admin_enqueue_scripts($hook)
     {
        
-        admin_enqueue_style('owl-carousel-css', plugins_url('/assets/lib/owl-carousel/owl.carousel.min.css', __FILE__));
-        admin_enqueue_style('owl-carousel-theme-style', plugins_url('/assets/lib/owl-carousel/owl.theme.default.css', __FILE__));
-        admin_enqueue_style('semafor-elementor-widgets-global-style', plugins_url('/assets/css/semafor-elementor-widgets.css', __FILE__));
+        wp_enqueue_style('owl-carousel-css', plugins_url('/assets/lib/owl-carousel/owl.carousel.min.css', __FILE__));
+        wp_enqueue_style('owl-carousel-theme-style', plugins_url('/assets/lib/owl-carousel/owl.theme.default.css', __FILE__));
+        wp_enqueue_style('semafor-elementor-widgets-global-style', plugins_url('/assets/css/semafor-elementor-widgets.css', __FILE__));
 
-        admin_enqueue_script('jQuery', plugins_url('/assets/lib/jQuery/jquery-3.4.1.min.js', __FILE__));
-        admin_enqueue_script('owl-carousel-js', plugins_url('/assets/lib/owl-carousel/owl.carousel.min.js', __FILE__));
-        admin_enqueue_script('semafor-elementor-widgets-global-js', plugins_url('/assets/js/semafor-elementor-widgets.js', __FILE__));
+        wp_enqueue_script('jQuery', plugins_url('/assets/lib/jQuery/jquery-3.4.1.min.js', __FILE__));
+        wp_enqueue_script('owl-carousel-js', plugins_url('/assets/lib/owl-carousel/owl.carousel.min.js', __FILE__));
+        wp_enqueue_script('semafor-elementor-widgets-global-js', plugins_url('/assets/js/semafor-elementor-widgets.js', __FILE__));
     }
 }
 
