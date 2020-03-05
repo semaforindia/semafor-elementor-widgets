@@ -114,6 +114,16 @@ class Slider extends \Elementor\Widget_Base
 			]
 		);
 
+		$this->add_control(
+			'custom-text',
+			[
+				'label' => __('Custom Text', 'elementor-pro'),
+				'type' => \Elementor\Controls_Manager::TEXT,
+				'default' => __('Custom Text', 'elementor-pro'),
+				'label_block' => true,
+			]
+		);
+
 
 		$repeater = new \Elementor\Repeater();
 
@@ -1297,8 +1307,7 @@ class Slider extends \Elementor\Widget_Base
 	protected function render()
 	{
 
-		$settings = $this->get_settings();
-
+		$settings = $this->get_settings_for_display();
 		if (empty($settings['slides'])) {
 			return;
 		}
@@ -1313,7 +1322,7 @@ class Slider extends \Elementor\Widget_Base
 		$slide_count = 0;
 
 		?>
-		<div class="owl-carousel">
+		<div class="owl-carousel" data-owl-carousel='{"margin": 10, "items": 1, "loop": true}'>
 			<?php
 
 			foreach ($settings['slides'] as $slide) {
@@ -1348,48 +1357,9 @@ class Slider extends \Elementor\Widget_Base
 			?>
 		</div>
 	<?php
-
-
-
-
 	}
 
-	protected function _content_template()
-	{
-
-?>
-
-	<div class="owl-carousel">
-				
-				
-					<div class="elementor-repeater-item-{{ slide._id }} owl-item">
-					<# jQuery.each( settings.slides, function( index, slide ) { #>
-						<div class="owl-slide-inner">
-							<div class="owl-slide-contents">
-								<# if ( slide.heading ) { #>
-									<div class="elementor-slide-heading">{{{ slide.heading }}}</div>
-									<# } if ( slide.description ) { #>
-										<div class="elementor-slide-description">{{{ slide.description }}}</div>
-										<# } if ( slide.button_text ) { #>
-											<div class="elementor-button elementor-slide-button elementor-size-{{ buttonSize }}">{{{ slide.button_text }}}</div>
-											<# } #>
-							</div>
-						</div>
-						<# }); #>
-					</div>
-				
-					
-			</div>
-		// <!-- <div class="owl-carousel">
-		// 	<div> Your Content </div>
-		// 	<div> Your Content </div>
-		// 	<div> Your Content </div>
-		// 	<div> Your Content </div>
-		// 	<div> Your Content </div>
-		// 	<div> Your Content </div>
-		// 	<div> Your Content </div>
-		// </div> -->
-<?php
-
+	protected function _content_template() {
+		
 	}
 }
