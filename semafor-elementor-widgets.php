@@ -96,10 +96,22 @@ final class SemaforElementorWidgets
      */
     public function __construct()
     {
-
+        add_action( 'elementor/elements/categories_registered', [ $this, 'register_category' ] );
         add_action('init', [$this, 'i18n']);
         add_action('plugins_loaded', [$this, 'init']);
     }
+
+    public function register_category( $elements ) {
+
+		\Elementor\Plugin::instance()->elements_manager->add_category(
+			'sew',
+			[
+				'title' => 'Semafor Elementor Widgets',
+				'icon'  => 'font'
+			],
+			1
+		);
+	}
 
     /**
      * Load Textdomain
@@ -158,7 +170,7 @@ final class SemaforElementorWidgets
 
         // Adding Assets
         add_action('wp_enqueue_scripts', array($this, 'enqueue'));
-        add_action('admin_enqueue_scripts', array($this, 'admin_enqueue'));
+        // add_action('admin_enqueue_scripts', array($this, 'admin_enqueue'));
     }
 
     /**
@@ -248,14 +260,18 @@ final class SemaforElementorWidgets
     {
 
         // Include Widget files
+        require_once(__DIR__ . '/widgets/navigation.php');
         require_once(__DIR__ . '/widgets/faq.php');
         // require_once(__DIR__ . '/widgets/post-carousel.php');
         require_once(__DIR__ . '/widgets/slider.php');
+        require_once(__DIR__ . '/widgets/demo.php');
 
         // Register widget
+        \Elementor\Plugin::instance()->widgets_manager->register_widget_type(new Navigation());
         \Elementor\Plugin::instance()->widgets_manager->register_widget_type(new Semafor_FAQ());
         // \Elementor\Plugin::instance()->widgets_manager->register_widget_type(new SemaforPostCarousel());
         \Elementor\Plugin::instance()->widgets_manager->register_widget_type(new Slider());
+        \Elementor\Plugin::instance()->widgets_manager->register_widget_type(new Demo());
     }
 
     /**

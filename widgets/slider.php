@@ -61,7 +61,7 @@ class Slider extends \Elementor\Widget_Base
 	}
 	public function get_categories()
 	{
-		return ['general'];
+		return ['sew'];
 	}
 	public function get_keywords()
 	{
