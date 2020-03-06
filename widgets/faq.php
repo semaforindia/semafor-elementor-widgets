@@ -67,7 +67,7 @@ class Semafor_FAQ extends \Elementor\Widget_Base
      */
     public function get_categories()
     {
-        return ['general'];
+        return ['sew'];
     }
 
     /**
