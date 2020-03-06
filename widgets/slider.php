@@ -1435,8 +1435,8 @@ class Slider extends \Elementor\Widget_Base
 
 		?>
 		<div class="owl-carousel" data-owl-carousel='{
-			"margin":<?php echo $settings['slides_margin']?>, 
-			"items": <?php echo $settings['slides_to_show']?>, 
+			 
+			"items": <?php echo $settings['slides_to_show'] ?>, 
 			"loop":<?php echo $settings['infinite']?>, 
 			"center":<?php if ($settings['center_mode'] == 'yes'){
         echo "yes";
@@ -1451,7 +1451,7 @@ class Slider extends \Elementor\Widget_Base
 			"autoWidth":<?php echo $settings['autoWidth']?>,
 			"nav":<?php echo $settings['slides_nav']?>,
 			"rewind":<?php echo $settings['slides_rewind']?>,
-			"dots":<?php echo $settings['slides_dots']?>
+			"dots":<?php echo $settings['slides_dots']?>,
 		}'>
 			<?php
 
