@@ -158,7 +158,7 @@ final class SemaforElementorWidgets
 
         // Adding Assets
         add_action('wp_enqueue_scripts', array($this, 'enqueue'));
-        add_action('admin_enqueue_scripts', array($this, 'admin_enqueue'));
+        add_action('admin_enqueue_scripts', array($this, 'admin_enqueue_scripts'));
     }
 
     /**

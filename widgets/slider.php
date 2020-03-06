@@ -600,7 +600,7 @@ class Slider extends \Elementor\Widget_Base
 		$slides_to_show = range( 1, 10 );
 
 		$slides_to_show = array_combine( $slides_to_show, $slides_to_show );
-
+		//items
 		$this->add_responsive_control(
 			'slides_to_show',
 			[
@@ -612,7 +612,7 @@ class Slider extends \Elementor\Widget_Base
 				'frontend_available' => true,
 			]
 		);
-
+		//slideby
 		$this->add_control(
 			'slides_to_scroll',
 			[
@@ -626,6 +626,7 @@ class Slider extends \Elementor\Widget_Base
 				'frontend_available' => true,
 			]
 		);
+		//margin
 		$this->add_responsive_control(
 			'slides_margin',
 			[
@@ -637,6 +638,7 @@ class Slider extends \Elementor\Widget_Base
 				],
 			]
 		);
+		//loop
 		$this->add_control(
 			'infinite',
 			[
@@ -646,22 +648,98 @@ class Slider extends \Elementor\Widget_Base
 				'frontend_available' => true,
 			]
 		);
+		//center mode
 		$this->add_control(
-			'navigation',
+			'center_mode',
 			[
-				'label' => __('Navigation', 'elementor-pro'),
-				'type' => \Elementor\Controls_Manager::SELECT,
-				'default' => 'both',
-				'options' => [
-					'both' => __('Arrows and Dots', 'elementor-pro'),
-					'arrows' => __('Arrows', 'elementor-pro'),
-					'dots' => __('Dots', 'elementor-pro'),
-					'none' => __('None', 'elementor-pro'),
-				],
+				'label' => __('Center Mode', 'elementor-pro'),
+				'type' => \Elementor\Controls_Manager::SWITCHER,
+				'default' => 'yes',
 				'frontend_available' => true,
 			]
 		);
-
+		//mousedrag
+		$this->add_control(
+			'mouse_drag',
+			[
+				'label' => __('Mouse Drag', 'elementor-pro'),
+				'type' => \Elementor\Controls_Manager::SWITCHER,
+				'default' => 'yes',
+				'frontend_available' => true,
+			]
+		);
+		//touchDrag
+		$this->add_control(
+			'touch_drag',
+			[
+				'label' => __('Touch Drag', 'elementor-pro'),
+				'type' => \Elementor\Controls_Manager::SWITCHER,
+				'default' => 'yes',
+				'frontend_available' => true,
+			]
+		);
+		//pullDrag
+		$this->add_control(
+			'pull_drag',
+			[
+				'label' => __('Pull Drag', 'elementor-pro'),
+				'type' => \Elementor\Controls_Manager::SWITCHER,
+				'default' => 'yes',
+				'frontend_available' => true,
+			]
+		);
+		//freeDrag
+		$this->add_control(
+			'free_drag',
+			[
+				'label' => __('Free Drag', 'elementor-pro'),
+				'type' => \Elementor\Controls_Manager::SWITCHER,
+				'default' => 'yes',
+				'frontend_available' => true,
+			]
+		);
+		//autoWidth
+		$this->add_control(
+			'autoWidth',
+			[
+				'label' => __('Auto Width', 'elementor-pro'),
+				'type' => \Elementor\Controls_Manager::SWITCHER,
+				'default' => 'yes',
+				'frontend_available' => true,
+			]
+		);
+		//nav
+		$this->add_control(
+			'slides_nav',
+			[
+				'label' => __('Nav', 'elementor-pro'),
+				'type' => \Elementor\Controls_Manager::SWITCHER,
+				'default' => 'yes',
+				'frontend_available' => true,
+			]
+		);
+		//rewind
+		$this->add_control(
+			'slides_rewind',
+			[
+				'label' => __('Rewind', 'elementor-pro'),
+				'type' => \Elementor\Controls_Manager::SWITCHER,
+				'default' => 'yes',
+				'frontend_available' => true,
+			]
+		);
+		//dots
+		$this->add_control(
+			'slides_dots',
+			[
+				'label' => __('Dots', 'elementor-pro'),
+				'type' => \Elementor\Controls_Manager::SWITCHER,
+				'default' => 'yes',
+				'frontend_available' => true,
+			]
+		);
+		
+		
 		$this->add_control(
 			'autoplay',
 			[
@@ -671,7 +749,6 @@ class Slider extends \Elementor\Widget_Base
 				'frontend_available' => true,
 			]
 		);
-
 		$this->add_control(
 			'pause_on_hover',
 			[
@@ -684,7 +761,6 @@ class Slider extends \Elementor\Widget_Base
 				],
 			]
 		);
-
 		$this->add_control(
 			'pause_on_interaction',
 			[
@@ -697,7 +773,6 @@ class Slider extends \Elementor\Widget_Base
 				],
 			]
 		);
-
 		$this->add_control(
 			'autoplay_speed',
 			[
@@ -713,9 +788,6 @@ class Slider extends \Elementor\Widget_Base
 				'frontend_available' => true,
 			]
 		);
-
-		
-
 		$this->add_control(
 			'transition',
 			[
@@ -1362,14 +1434,32 @@ class Slider extends \Elementor\Widget_Base
 		$slide_count = 0;
 
 		?>
-		<div class="owl-carousel" data-owl-carousel='{"margin": 10, "items": 1, "loop": true}'>
+		<div class="owl-carousel" data-owl-carousel='{
+			"margin":<?php echo $settings['slides_margin']?>, 
+			"items": <?php echo $settings['slides_to_show']?>, 
+			"loop":<?php echo $settings['infinite']?>, 
+			"center":<?php if ($settings['center_mode'] == 'yes'){
+        echo "yes";
+    }
+    else { 
+        echo "no";
+    } ?>,
+			"mouseDrag":<?php echo $settings['mouse_drag'] ?>,
+			"touchDrag":<?php echo $settings['touch_drag'] ?>,
+			"pullDrag":<?php echo $settings['pull_drag']?>,
+			"freeDrag":<?php echo $settings['free_drag']?>,
+			"autoWidth":<?php echo $settings['autoWidth']?>,
+			"nav":<?php echo $settings['slides_nav']?>,
+			"rewind":<?php echo $settings['slides_rewind']?>,
+			"dots":<?php echo $settings['slides_dots']?>
+		}'>
 			<?php
 
 			foreach ($settings['slides'] as $slide) {
 			?>
 				<div style="background-image: url('<?php echo $slide['background_image']['url'] ?>');">
 					<?php
-					echo '<div class="owl-slide-bg' . $ken_class . '"></div>';
+					
 					echo '<div class="owl-slide-inner">';
 					echo '<div class="owl-slide-contents">';
 					if ($slide['heading']) {
