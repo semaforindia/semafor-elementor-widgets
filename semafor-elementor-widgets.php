@@ -96,22 +96,23 @@ final class SemaforElementorWidgets
      */
     public function __construct()
     {
-        add_action( 'elementor/elements/categories_registered', [ $this, 'register_category' ] );
+        add_action('elementor/elements/categories_registered', [$this, 'register_category']);
         add_action('init', [$this, 'i18n']);
         add_action('plugins_loaded', [$this, 'init']);
     }
 
-    public function register_category( $elements ) {
+    public function register_category($elements)
+    {
 
-		\Elementor\Plugin::instance()->elements_manager->add_category(
-			'sew',
-			[
-				'title' => 'Semafor Elementor Widgets',
-				'icon'  => 'font'
-			],
-			1
-		);
-	}
+        \Elementor\Plugin::instance()->elements_manager->add_category(
+            'sew',
+            [
+                'title' => 'Semafor Elementor Widgets',
+                'icon'  => 'font'
+            ],
+            1
+        );
+    }
 
     /**
      * Load Textdomain
@@ -299,18 +300,17 @@ final class SemaforElementorWidgets
         wp_enqueue_style('owl-carousel-css', plugins_url('/assets/lib/owl-carousel/owl.carousel.min.css', __FILE__));
         wp_enqueue_style('owl-carousel-theme-style', plugins_url('/assets/lib/owl-carousel/owl.theme.default.css', __FILE__));
         wp_enqueue_style('semafor-elementor-widgets-global-style', plugins_url('/assets/css/semafor-elementor-widgets.css', __FILE__));
-        
+
 
 
 
         wp_enqueue_script('jQuery', plugins_url('/assets/lib/jQuery/jquery-3.4.1.min.js', __FILE__));
         wp_enqueue_script('owl-carousel-js', plugins_url('/assets/lib/owl-carousel/owl.carousel.min.js', __FILE__));
         wp_enqueue_script('semafor-elementor-widgets-global-js', plugins_url('/assets/js/semafor-elementor-widgets.js', __FILE__));
-       
     }
     public function admin_enqueue_scripts($hook)
     {
-       
+
         wp_enqueue_style('owl-carousel-css', plugins_url('/assets/lib/owl-carousel/owl.carousel.min.css', __FILE__));
         wp_enqueue_style('owl-carousel-theme-style', plugins_url('/assets/lib/owl-carousel/owl.theme.default.css', __FILE__));
         wp_enqueue_style('semafor-elementor-widgets-global-style', plugins_url('/assets/css/semafor-elementor-widgets.css', __FILE__));
