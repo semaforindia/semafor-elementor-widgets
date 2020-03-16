@@ -78,8 +78,9 @@ class Slider extends \Elementor\Widget_Base
 			'xl' => __('Extra Large', 'elementor-pro'),
 		];
 	}
-	public function on_import( $element ) {
-		if ( ! get_post_type_object( $element['settings']['posts_post_type'] ) ) {
+	public function on_import($element)
+	{
+		if (!get_post_type_object($element['settings']['posts_post_type'])) {
 			$element['settings']['posts_post_type'] = 'post';
 		}
 
@@ -598,8 +599,8 @@ class Slider extends \Elementor\Widget_Base
 			]
 		);
 		$this->end_controls_section();
-	
-	
+
+
 		$this->start_controls_section(
 			'section_slider_options',
 			[
@@ -607,17 +608,17 @@ class Slider extends \Elementor\Widget_Base
 				'type' => \Elementor\Controls_Manager::SECTION,
 			]
 		);
-		$slides_to_show = range( 1, 10 );
+		$slides_to_show = range(1, 10);
 
-		$slides_to_show = array_combine( $slides_to_show, $slides_to_show );
+		$slides_to_show = array_combine($slides_to_show, $slides_to_show);
 		//items
 		$this->add_responsive_control(
 			'slides_to_show',
 			[
-				'label' => __( 'Slides to Show', 'elementor' ),
+				'label' => __('Slides to Show', 'elementor'),
 				'type' => Controls_Manager::SELECT,
 				'options' => [
-					'' => __( 'Default', 'elementor' ),
+					'' => __('Default', 'elementor'),
 				] + $slides_to_show,
 				'frontend_available' => true,
 			]
@@ -626,7 +627,7 @@ class Slider extends \Elementor\Widget_Base
 		$this->add_control(
 			'slides_to_scroll',
 			[
-				'label' => __( 'Slides to Scroll', 'elementor' ),
+				'label' => __('Slides to Scroll', 'elementor'),
 				'type' => Controls_Manager::SELECT,
 				'default' => '2',
 				'options' => $slides_to_show,
@@ -640,9 +641,9 @@ class Slider extends \Elementor\Widget_Base
 		$this->add_responsive_control(
 			'slides_margin',
 			[
-				'label' => __( 'Margin', 'elementor-pro' ),
+				'label' => __('Margin', 'elementor-pro'),
 				'type' => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%' ],
+				'size_units' => ['px', 'em', '%'],
 				'selectors' => [
 					'{{WRAPPER}} .owl-slide-inner' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -748,8 +749,8 @@ class Slider extends \Elementor\Widget_Base
 				'frontend_available' => true,
 			]
 		);
-		
-		
+
+
 		$this->add_control(
 			'autoplay',
 			[
@@ -1458,80 +1459,67 @@ class Slider extends \Elementor\Widget_Base
 		$slides = [];
 		$slide_count = 0;
 
-		?>
+?>
 		<div class="owl-carousel" data-owl-carousel='{
 			 
 			"items": <?php echo $settings['slides_to_show'] ?>, 
-			"loop":<?php echo $settings['infinite']?>, 
-			"center":<?php if ($settings['center_mode'] == 'yes'){
-					echo "yes";
-				}
-				else { 
-					echo "no";
-				} 
-			?>,
-			"mouseDrag":<?php if ($settings['mouse_drag'] == 'yes'){
-					echo "yes";
-				}
-				else { 
-					echo "no";
-				}  
-			?>,
-			"touchDrag":<?php if ($settings['touch_drag'] == 'yes'){
-					echo "yes";
-				}
-				else { 
-					echo "no";
-				}  
-			?>,
-			"pullDrag":<?php  if ($settings['pull_drag'] == 'yes'){
-					echo "yes";
-				}
-				else { 
-					echo "no";
-				}  
-			?>,
-			"freeDrag":<?php 
-			if ($settings['free_drag'] == 'yes'){
-				echo "yes";
-			}
-			else { 
-				echo "no";
-			}  
-			?>,
-			"autoWidth":<?php
-			if ($settings['autoWidth'] == 'yes'){
-				echo "yes";
-			}
-			else { 
-				echo "no";
-			}  
-			?>,
-			"nav":<?php
-			if ($settings['slides_nav'] == 'yes'){
-				echo "yes";
-			}
-			else { 
-				echo "no";
-			}  
-			?>,
-			"rewind":<?php
-			if ($settings['slides_rewind'] == 'yes'){
-				echo "yes";
-			}
-			else { 
-				echo "no";
-			}  
-			?>,
-			"dots":<?php
-				if ($settings['slides_dots'] == 'yes'){
-					echo "yes";
-				}
-				else { 
-					echo "no";
-				}  
-			?>,
-			<!-- //"slideTransition":<?php echo $settings['slideTransition']?>, -->
+			"loop":<?php if ($settings['infinite'] == 'yes') {
+						echo 'true';
+					} else {
+						echo 'false';
+					}
+					?>,
+			"center":<?php if ($settings['center_mode'] == 'yes') {
+							echo 'true';
+						} else {
+							echo 'false';
+						}
+						?>,
+			"mouseDrag":<?php if ($settings['mouse_drag'] == 'yes') {
+							echo 'true';
+						} else {
+							echo 'false';
+						}
+						?>,
+			"touchDrag":<?php if ($settings['touch_drag'] == 'yes') {
+							echo 'true';
+						} else {
+							echo 'false';
+						}
+						?>,
+			"pullDrag":<?php if ($settings['pull_drag'] == 'yes') {
+							echo 'true';
+						} else {
+							echo 'false';
+						}
+						?>,
+			"freeDrag":<?php if ($settings['free_drag'] == 'yes') {
+							echo 'true';
+						} else {
+							echo 'false';
+						}
+						?>,
+			"autoWidth":<?php if ($settings['autoWidth'] == 'yes') {
+							echo 'true';
+						} else {
+							echo 'false';
+						}
+						?>,
+			"nav":<?php if ($settings['slides_nav'] == 'yes') {
+						echo 'true';
+					} else {
+						echo 'false';
+					}
+					?>,
+			"dots":<?php if ($settings['slides_dots'] == 'yes') {
+						echo 'true';
+					} else {
+						echo 'false';
+					}
+					?>,
+			"autoplaySpeed": <?php echo $settings['autoplay_speed'] ?>
+			
+			
 		}'>
 			<?php
 
@@ -1539,7 +1527,7 @@ class Slider extends \Elementor\Widget_Base
 			?>
 				<div class="owl-image" style="background-image: url('<?php echo $slide['background_image']['url'] ?>');">
 					<?php
-					
+
 					echo '<div class="owl-slide-inner">';
 					echo '<div class="owl-slide-contents">';
 					if ($slide['heading']) {
@@ -1566,10 +1554,10 @@ class Slider extends \Elementor\Widget_Base
 
 			?>
 		</div>
-	<?php
+<?php
 	}
 
-	protected function _content_template() {
-		
+	protected function _content_template()
+	{
 	}
 }
