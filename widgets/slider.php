@@ -290,7 +290,17 @@ class Slider extends \Elementor\Widget_Base
 				],
 			]
 		);
-
+		$repeater->add_responsive_control(
+			'slides_margin',
+			[
+				'label' => __('Margin', 'elementor-pro'),
+				'type' => Controls_Manager::DIMENSIONS,
+				'size_units' => ['px', 'em', '%'],
+				'selectors' => [
+					'{{WRAPPER}} .owl-image' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+			]
+		);
 		$repeater->end_controls_tab();
 		//content tab
 		$repeater->start_controls_tab('content', ['label' => __('Content', 'elementor-pro')]);
@@ -788,19 +798,19 @@ class Slider extends \Elementor\Widget_Base
 				'frontend_available' => true,
 			]
 		);
-		$this->add_control(
-			'transition',
-			[
-				'label' => __('Transition', 'elementor-pro'),
-				'type' => \Elementor\Controls_Manager::SELECT,
-				'default' => 'slide',
-				'options' => [
-					'slide' => __('Slide', 'elementor-pro'),
-					'fade' => __('Fade', 'elementor-pro'),
-				],
-				'frontend_available' => true,
-			]
-		);
+		// $this->add_control(
+		// 	'slideTransition',
+		// 	[
+		// 		'label' => __('Transition', 'elementor-pro'),
+		// 		'type' => \Elementor\Controls_Manager::SELECT,
+		// 		'default' => 'slide',
+		// 		'options' => [
+		// 			'slide' => __('Slide', 'elementor-pro'),
+		// 			'fade' => __('Fade', 'elementor-pro'),
+		// 		],
+		// 		'frontend_available' => true,
+		// 	]
+		// );
 
 		$this->add_control(
 			'transition_speed',
@@ -1118,7 +1128,22 @@ class Slider extends \Elementor\Widget_Base
 				],
 			]
 		);
-
+		$this->add_control(
+			'content_spacing',
+			[
+				'label' => __('Spacing', 'elementor-pro'),
+				'type' => Controls_Manager::SLIDER,
+				'range' => [
+					'px' => [
+						'min' => 0,
+						'max' => 100,
+					],
+				],
+				'selectors' => [
+					'{{WRAPPER}} .owl-slide-inner .elementor-slide-item-description:not(:last-child)' => 'margin-bottom: {{SIZE}}{{UNIT}}',
+				],
+			]
+		);
 		$this->end_controls_section();
 
 		$this->start_controls_section(
@@ -1439,25 +1464,80 @@ class Slider extends \Elementor\Widget_Base
 			"items": <?php echo $settings['slides_to_show'] ?>, 
 			"loop":<?php echo $settings['infinite']?>, 
 			"center":<?php if ($settings['center_mode'] == 'yes'){
-        echo "yes";
-    }
-    else { 
-        echo "no";
-    } ?>,
-			"mouseDrag":<?php echo $settings['mouse_drag'] ?>,
-			"touchDrag":<?php echo $settings['touch_drag'] ?>,
-			"pullDrag":<?php echo $settings['pull_drag']?>,
-			"freeDrag":<?php echo $settings['free_drag']?>,
-			"autoWidth":<?php echo $settings['autoWidth']?>,
-			"nav":<?php echo $settings['slides_nav']?>,
-			"rewind":<?php echo $settings['slides_rewind']?>,
-			"dots":<?php echo $settings['slides_dots']?>,
+					echo "yes";
+				}
+				else { 
+					echo "no";
+				} 
+			?>,
+			"mouseDrag":<?php if ($settings['mouse_drag'] == 'yes'){
+					echo "yes";
+				}
+				else { 
+					echo "no";
+				}  
+			?>,
+			"touchDrag":<?php if ($settings['touch_drag'] == 'yes'){
+					echo "yes";
+				}
+				else { 
+					echo "no";
+				}  
+			?>,
+			"pullDrag":<?php  if ($settings['pull_drag'] == 'yes'){
+					echo "yes";
+				}
+				else { 
+					echo "no";
+				}  
+			?>,
+			"freeDrag":<?php 
+			if ($settings['free_drag'] == 'yes'){
+				echo "yes";
+			}
+			else { 
+				echo "no";
+			}  
+			?>,
+			"autoWidth":<?php
+			if ($settings['autoWidth'] == 'yes'){
+				echo "yes";
+			}
+			else { 
+				echo "no";
+			}  
+			?>,
+			"nav":<?php
+			if ($settings['slides_nav'] == 'yes'){
+				echo "yes";
+			}
+			else { 
+				echo "no";
+			}  
+			?>,
+			"rewind":<?php
+			if ($settings['slides_rewind'] == 'yes'){
+				echo "yes";
+			}
+			else { 
+				echo "no";
+			}  
+			?>,
+			"dots":<?php
+				if ($settings['slides_dots'] == 'yes'){
+					echo "yes";
+				}
+				else { 
+					echo "no";
+				}  
+			?>,
+			<!-- //"slideTransition":<?php echo $settings['slideTransition']?>, -->
 		}'>
 			<?php
 
 			foreach ($settings['slides'] as $slide) {
 			?>
-				<div style="background-image: url('<?php echo $slide['background_image']['url'] ?>');">
+				<div class="owl-image" style="background-image: url('<?php echo $slide['background_image']['url'] ?>');">
 					<?php
 					
 					echo '<div class="owl-slide-inner">';
