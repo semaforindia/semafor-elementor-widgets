@@ -149,7 +149,7 @@ class Slider extends \Elementor\Widget_Base
 				'label' => _x('Image', 'Background Control', 'elementor-pro'),
 				'type' => \Elementor\Controls_Manager::MEDIA,
 				'selectors' => [
-					'{{WRAPPER}} {{CURRENT_ITEM}} .owl-slide-bg' => 'background-image: url({{URL}})',
+					'{{WRAPPER}} {{CURRENT_ITEM}} .owl-image' => 'background-image: url({{URL}})',
 				],
 			]
 		);
@@ -166,7 +166,7 @@ class Slider extends \Elementor\Widget_Base
 					'auto' => _x('Auto', 'Background Control', 'elementor-pro'),
 				],
 				'selectors' => [
-					'{{WRAPPER}} {{CURRENT_ITEM}} .owl-slide-bg' => 'background-size: {{VALUE}}',
+					'{{WRAPPER}} .owl-image' => 'background-size: {{VALUE}}',
 				],
 				'conditions' => [
 					'terms' => [
@@ -1021,6 +1021,54 @@ class Slider extends \Elementor\Widget_Base
 		);
 
 		$this->end_controls_section();
+		$this->start_controls_section(
+			'section_style_description',
+			[
+				'label' => __( 'Description', 'elementor' ),
+				'tab' => Controls_Manager::TAB_STYLE,
+			]
+		);
+
+		$this->add_control(
+			'description_spacing',
+			[
+				'label' => __( 'Spacing', 'elementor' ),
+				'type' => Controls_Manager::SLIDER,
+				'range' => [
+					'px' => [
+						'min' => 0,
+						'max' => 100,
+					],
+				],
+				'selectors' => [
+					'{{WRAPPER}} .owl-slide-inner .elementor-slide-description:not(:last-child)' => 'margin-bottom: {{SIZE}}{{UNIT}}',
+				],
+			]
+		);
+
+		$this->add_control(
+			'description_color',
+			[
+				'label' => __( 'Text Color', 'elementor' ),
+				'type' => Controls_Manager::COLOR,
+				'selectors' => [
+					'{{WRAPPER}} .elementor-slide-description' => 'color: {{VALUE}}',
+
+				],
+			]
+		);
+
+		$this->add_group_control(
+			Group_Control_Typography::get_type(),
+			[
+				'name' => 'description_typography',
+				'scheme' => Schemes\Typography::TYPOGRAPHY_2,
+				'selector' => '{{WRAPPER}} .elementor-slide-description',
+			]
+		);
+
+		$this->end_controls_section();
+
 
 
 		$this->start_controls_section(
