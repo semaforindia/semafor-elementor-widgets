@@ -617,7 +617,7 @@ class Slider extends \Elementor\Widget_Base
 			[
 				'label' => __('Slides to Show', 'elementor'),
 				'type' => Controls_Manager::SELECT,
-				'default'=> '3',
+				'default' => '3',
 				'options' => [
 					'' => __('Default', 'elementor'),
 				] + $slides_to_show,
@@ -750,7 +750,12 @@ class Slider extends \Elementor\Widget_Base
 				'frontend_available' => true,
 			]
 		);
-
+		$this->add_control(
+			'hr',
+			[
+				'type' => \Elementor\Controls_Manager::DIVIDER,
+			]
+		);
 
 		$this->add_control(
 			'autoplay',
@@ -759,6 +764,29 @@ class Slider extends \Elementor\Widget_Base
 				'type' => \Elementor\Controls_Manager::SWITCHER,
 				'default' => 'yes',
 				'frontend_available' => true,
+			]
+		);
+		$this->add_control(
+			'autoplay_speed',
+			[
+				'label' => __('Autoplay Speed', 'elementor-pro'),
+				'type' => \Elementor\Controls_Manager::NUMBER,
+				'condition' => [
+					'autoplay!' => '',
+
+				],
+				'selectors' => [
+					'{{WRAPPER}} .owl-slide' => 'transition-duration: calc({{VALUE}}ms*1.2)',
+				],
+				'frontend_available' => true,
+				'default' => '30',
+			]
+		);
+
+		$this->add_control(
+			'hr',
+			[
+				'type' => \Elementor\Controls_Manager::DIVIDER,
 			]
 		);
 		$this->add_control(
@@ -773,34 +801,19 @@ class Slider extends \Elementor\Widget_Base
 				],
 			]
 		);
-		$this->add_control(
-			'autoplay_Timeout',
-			[
-				'label' => __('Autoplay Timeout', 'elementor-pro'),
-				'type' => \Elementor\Controls_Manager::NUMBER,
-				'default' => 5000,
-				'frontend_available' => true,
-				'condition' => [
-					'autoplay!' => '',
-				],
-			]
-		);
-		$this->add_control(
-			'autoplay_speed',
-			[
-				'label' => __('Autoplay Speed', 'elementor-pro'),
-				'type' => \Elementor\Controls_Manager::NUMBER,
-				'condition' => [
-					'autoplay!' => '',
-					'type' => \Elementor\Controls_Manager::SWITCHER,
-					'default' => 'no',
-				],
-				'selectors' => [
-					'{{WRAPPER}} .owl-slide' => 'transition-duration: calc({{VALUE}}ms*1.2)',
-				],
-				'frontend_available' => true,
-			]
-		);
+		// $this->add_control(
+		// 	'autoplay_Timeout',
+		// 	[
+		// 		'label' => __('Autoplay Timeout', 'elementor-pro'),
+		// 		'type' => \Elementor\Controls_Manager::NUMBER,
+		// 		'default' => 5000,
+		// 		'frontend_available' => true,
+		// 		'condition' => [
+		// 			'autoplay!' => '',
+		// 		],
+		// 	]
+		// );
+
 		// $this->add_control(
 		// 	'slideTransition',
 		// 	[
@@ -826,18 +839,18 @@ class Slider extends \Elementor\Widget_Base
 		);
 
 		$this->add_control(
-			'content_animation',
+			'slide_transition',
 			[
-				'label' => __('Content Animation', 'elementor-pro'),
+				'label' => __('Slide Transition', 'elementor-pro'),
 				'type' => \Elementor\Controls_Manager::SELECT,
-				'default' => 'fadeInUp',
+				'default' => 'linear',
 				'options' => [
 					'' => __('None', 'elementor-pro'),
-					'fadeInDown' => __('Down', 'elementor-pro'),
-					'fadeInUp' => __('Up', 'elementor-pro'),
-					'fadeInRight' => __('Right', 'elementor-pro'),
-					'fadeInLeft' => __('Left', 'elementor-pro'),
-					'zoomIn' => __('Zoom', 'elementor-pro'),
+					'linear' => __('Linear', 'elementor-pro'),
+					'ease' => __('Ease', 'elementor-pro'),
+					'ease-in-out' => __('Ease In Out', 'elementor-pro'),
+					'ease-in' => __('Ease In', 'elementor-pro'),
+					'ease-out' => __('Ease Out', 'elementor-pro'),
 				],
 			]
 		);
@@ -1026,7 +1039,7 @@ class Slider extends \Elementor\Widget_Base
 		$this->start_controls_section(
 			'section_style_description',
 			[
-				'label' => __( 'Description', 'elementor' ),
+				'label' => __('Description', 'elementor'),
 				'tab' => Controls_Manager::TAB_STYLE,
 			]
 		);
@@ -1034,7 +1047,7 @@ class Slider extends \Elementor\Widget_Base
 		$this->add_control(
 			'description_spacing',
 			[
-				'label' => __( 'Spacing', 'elementor' ),
+				'label' => __('Spacing', 'elementor'),
 				'type' => Controls_Manager::SLIDER,
 				'range' => [
 					'px' => [
@@ -1051,7 +1064,7 @@ class Slider extends \Elementor\Widget_Base
 		$this->add_control(
 			'description_color',
 			[
-				'label' => __( 'Text Color', 'elementor' ),
+				'label' => __('Text Color', 'elementor'),
 				'type' => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .elementor-slide-description' => 'color: {{VALUE}}',
@@ -1568,22 +1581,44 @@ class Slider extends \Elementor\Widget_Base
 					}
 					?>,
 			"autoplay":<?php if ($settings['autoplay'] == 'yes') {
-				echo 'true';
-			} else {
-				echo 'false';
-			}
-			?>,
+							echo 'true';
+						} else {
+							echo 'false';
+						}
+						?>,
 			"autoplayHoverPause":<?php if ($settings['pause_on_hover'] == 'yes') {
-				echo 'true';
-			} else {
-				echo 'false';
-			}
-			?>,
-			 "autoplayTimeout": <?php echo $settings['autoplay_Timeout'] ?>, 
-			<!-- "autoplaySpeed": <?php echo $settings['autoplay_speed'] ?>
-			"autoplaySpeed": <?php if ($settings['autoplay'] == 'no') { -->
+										echo 'true';
+									} else {
+										echo 'false';
+									}
+									?>,
+			"autoplaySpeed": <?php if ($settings['autoplay'] == 'yes') {
+									echo $settings['autoplay_speed'];
+								} else {
+									echo 'false';
+								} ?>,
+			"slideTransition": <?php switch ($settings['slide_transition']) {
+									case "linear":
+										echo '"linear"';
+										break;
+									case "ease":
+										echo '"ease"';
+										break;
+									case "ease-in-out":
+										echo '"ease-in-out"';
+										break;
+									case "ease-in":
+										echo '"ease-in"';
+										break;
+									case "ease-out":
+										echo '"ease-out"';
+										break;
 
+									default:
+										echo '"linear"';
+								} ?>
 
+			
 		}'>
 			<?php
 
@@ -1591,7 +1626,7 @@ class Slider extends \Elementor\Widget_Base
 			?>
 				<div class="owl-image" style="background-image: url('<?php echo $slide['background_image']['url'] ?>');">
 					<?php
-					if ( 'yes' === $slide['background_overlay'] ) {
+					if ('yes' === $slide['background_overlay']) {
 						echo '<div class="elementor-background-overlay"></div>';
 					}
 					echo '<div class="owl-slide-inner">';
