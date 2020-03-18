@@ -253,7 +253,7 @@ class Slider extends \Elementor\Widget_Base
 					],
 				],
 				'selectors' => [
-					'{{WRAPPER}} {{CURRENT_ITEM}} .elementor-background-overlay' => 'background-color: {{VALUE}}',
+					'{{WRAPPER}} .elementor-background-overlay' => 'background-color: {{VALUE}}',
 				],
 			]
 		);
@@ -287,7 +287,7 @@ class Slider extends \Elementor\Widget_Base
 					],
 				],
 				'selectors' => [
-					'{{WRAPPER}} {{CURRENT_ITEM}} .elementor-background-overlay' => 'mix-blend-mode: {{VALUE}}',
+					'{{WRAPPER}} .elementor-background-overlay' => 'mix-blend-mode: {{VALUE}}',
 				],
 			]
 		);
@@ -617,6 +617,7 @@ class Slider extends \Elementor\Widget_Base
 			[
 				'label' => __('Slides to Show', 'elementor'),
 				'type' => Controls_Manager::SELECT,
+				'default'=> '3',
 				'options' => [
 					'' => __('Default', 'elementor'),
 				] + $slides_to_show,
@@ -773,11 +774,11 @@ class Slider extends \Elementor\Widget_Base
 			]
 		);
 		$this->add_control(
-			'pause_on_interaction',
+			'autoplay_Timeout',
 			[
-				'label' => __('Pause on Interaction', 'elementor-pro'),
-				'type' => \Elementor\Controls_Manager::SWITCHER,
-				'default' => 'yes',
+				'label' => __('Autoplay Timeout', 'elementor-pro'),
+				'type' => \Elementor\Controls_Manager::NUMBER,
+				'default' => 5000,
 				'frontend_available' => true,
 				'condition' => [
 					'autoplay!' => '',
@@ -789,12 +790,13 @@ class Slider extends \Elementor\Widget_Base
 			[
 				'label' => __('Autoplay Speed', 'elementor-pro'),
 				'type' => \Elementor\Controls_Manager::NUMBER,
-				'default' => 5000,
 				'condition' => [
-					'autoplay' => 'yes',
+					'autoplay!' => '',
+					'type' => \Elementor\Controls_Manager::SWITCHER,
+					'default' => 'no',
 				],
 				'selectors' => [
-					'{{WRAPPER}} .swiper-slide' => 'transition-duration: calc({{VALUE}}ms*1.2)',
+					'{{WRAPPER}} .owl-slide' => 'transition-duration: calc({{VALUE}}ms*1.2)',
 				],
 				'frontend_available' => true,
 			]
@@ -1565,9 +1567,23 @@ class Slider extends \Elementor\Widget_Base
 						echo 'false';
 					}
 					?>,
-			"autoplaySpeed": <?php echo $settings['autoplay_speed'] ?>
-			
-			
+			"autoplay":<?php if ($settings['autoplay'] == 'yes') {
+				echo 'true';
+			} else {
+				echo 'false';
+			}
+			?>,
+			"autoplayHoverPause":<?php if ($settings['pause_on_hover'] == 'yes') {
+				echo 'true';
+			} else {
+				echo 'false';
+			}
+			?>,
+			 "autoplayTimeout": <?php echo $settings['autoplay_Timeout'] ?>, 
+			<!-- "autoplaySpeed": <?php echo $settings['autoplay_speed'] ?>
+			"autoplaySpeed": <?php if ($settings['autoplay'] == 'no') { -->
+
+
 		}'>
 			<?php
 
@@ -1575,7 +1591,9 @@ class Slider extends \Elementor\Widget_Base
 			?>
 				<div class="owl-image" style="background-image: url('<?php echo $slide['background_image']['url'] ?>');">
 					<?php
-
+					if ( 'yes' === $slide['background_overlay'] ) {
+						echo '<div class="elementor-background-overlay"></div>';
+					}
 					echo '<div class="owl-slide-inner">';
 					echo '<div class="owl-slide-contents">';
 					if ($slide['heading']) {

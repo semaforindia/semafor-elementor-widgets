@@ -1,2 +1,35 @@
-.owl-carousel .owl-item{height:800px}
+.owl-carousel .owl-item {
+  height: auto;
+}
+
+.owl-carousel .owl-image {
+  position: relative;
+}
+
+.owl-carousel .owl-image .owl-slide-inner {
+  position: relative;
+  z-index: 1;
+}
+
+.owl-carousel .owl-nav span {
+  display: block;
+  color: #000;
+  height: auto;
+  font-size: 40px;
+  text-align: center;
+}
+
+.owl-carousel .owl-dot span {
+  width: 10px;
+  height: 10px;
+  display: block;
+  background-color: #000;
+  border-radius: 50%;
+  margin: 0 5px;
+  opacity: 0.5;
+}
+
+.owl-carousel .owl-dot.active span {
+  opacity: 1;
+}
 /*# sourceMappingURL=semafor-elementor-widgets.css.map */
