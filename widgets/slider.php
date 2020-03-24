@@ -624,6 +624,8 @@ class Slider extends \Elementor\Widget_Base
 				'frontend_available' => true,
 			]
 		);
+
+		// $this->add_responsive_control(
 		//slideby
 		$this->add_control(
 			'slides_to_scroll',
@@ -670,6 +672,12 @@ class Slider extends \Elementor\Widget_Base
 				'frontend_available' => true,
 			]
 		);
+		$this->add_control(
+			'Divider3',
+			[
+				'type' => \Elementor\Controls_Manager::DIVIDER,
+			]
+		);
 		//mousedrag
 		$this->add_control(
 			'mouse_drag',
@@ -708,6 +716,12 @@ class Slider extends \Elementor\Widget_Base
 				'type' => \Elementor\Controls_Manager::SWITCHER,
 				'default' => 'yes',
 				'frontend_available' => true,
+			]
+		);
+		$this->add_control(
+			'Divider2',
+			[
+				'type' => \Elementor\Controls_Manager::DIVIDER,
 			]
 		);
 		//autoWidth
@@ -751,7 +765,7 @@ class Slider extends \Elementor\Widget_Base
 			]
 		);
 		$this->add_control(
-			'hr',
+			'Divider1',
 			[
 				'type' => \Elementor\Controls_Manager::DIVIDER,
 			]
@@ -801,6 +815,9 @@ class Slider extends \Elementor\Widget_Base
 				],
 			]
 		);
+		// $this->add_control(
+		// 	'responsive'
+		// );
 		// $this->add_control(
 		// 	'autoplay_Timeout',
 		// 	[
@@ -1617,6 +1634,7 @@ class Slider extends \Elementor\Widget_Base
 									default:
 										echo '"linear"';
 								} ?>
+								
 
 			
 		}'>
