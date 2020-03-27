@@ -142,6 +142,27 @@ class Slider extends \Elementor\Widget_Base
 					'{{WRAPPER}} {{CURRENT_ITEM}} .owl-slide-bg' => 'background-color: {{VALUE}}',
 				],
 			]
+
+			
+		);
+		$repeater->add_control(
+			'type',
+			[
+				'type' => Controls_Manager::CHOOSE,
+				'label' => __( 'Type', 'elementor-pro' ),
+				'default' => 'image',
+				'options' => [
+					'image' => [
+						'title' => __( 'Image', 'elementor-pro' ),
+						'icon' => 'eicon-image-bold',
+					],
+					'video' => [
+						'title' => __( 'Video', 'elementor-pro' ),
+						'icon' => 'eicon-video-camera',
+					],
+				],
+				'toggle' => false,
+			]
 		);
 		$repeater->add_control(
 			'background_image',
@@ -179,7 +200,49 @@ class Slider extends \Elementor\Widget_Base
 				],
 			]
 		);
+		$repeater->add_control(
+			'image_link_to_type',
+			[
+				'label' => __( 'Link', 'elementor-pro' ),
+				'type' => Controls_Manager::SELECT,
+				'options' => [
+					'' => __( 'None', 'elementor-pro' ),
+					'file' => __( 'Media File', 'elementor-pro' ),
+					'custom' => __( 'Custom URL', 'elementor-pro' ),
+				],
+				'condition' => [
+					'type' => 'image',
+				],
+			]
+		);
 
+		$repeater->add_control(
+			'image_link_to',
+			[
+				'type' => Controls_Manager::URL,
+				'placeholder' => __( 'https://your-link.com', 'elementor-pro' ),
+				'show_external' => 'true',
+				'condition' => [
+					'type' => 'image',
+					'image_link_to_type' => 'custom',
+				],
+				'separator' => 'none',
+				'show_label' => false,
+			]
+		);
+		$repeater->add_control(
+			'video',
+			[
+				'label' => __( 'Video Link', 'elementor-pro' ),
+				'type' => Controls_Manager::URL,
+				'placeholder' => __( 'Enter your video link', 'elementor-pro' ),
+				'description' => __( 'YouTube or Vimeo link', 'elementor-pro' ),
+				'options' => false,
+				'condition' => [
+					'type' => 'video',
+				],
+			]
+		);
 		$repeater->add_control(
 			'background_ken_burns',
 			[
@@ -258,39 +321,39 @@ class Slider extends \Elementor\Widget_Base
 			]
 		);
 
-		$repeater->add_control(
-			'background_overlay_blend_mode',
-			[
-				'label' => __('Blend Mode', 'elementor-pro'),
-				'type' => \Elementor\Controls_Manager::SELECT,
-				'options' => [
-					'' => __('Normal', 'elementor-pro'),
-					'multiply' => 'Multiply',
-					'screen' => 'Screen',
-					'overlay' => 'Overlay',
-					'darken' => 'Darken',
-					'lighten' => 'Lighten',
-					'color-dodge' => 'Color Dodge',
-					'color-burn' => 'Color Burn',
-					'hue' => 'Hue',
-					'saturation' => 'Saturation',
-					'color' => 'Color',
-					'exclusion' => 'Exclusion',
-					'luminosity' => 'Luminosity',
-				],
-				'conditions' => [
-					'terms' => [
-						[
-							'name' => 'background_overlay',
-							'value' => 'yes',
-						],
-					],
-				],
-				'selectors' => [
-					'{{WRAPPER}} .elementor-background-overlay' => 'mix-blend-mode: {{VALUE}}',
-				],
-			]
-		);
+		// $repeater->add_control(
+		// 	'background_overlay_blend_mode',
+		// 	[
+		// 		'label' => __('Blend Mode', 'elementor-pro'),
+		// 		'type' => \Elementor\Controls_Manager::SELECT,
+		// 		'options' => [
+		// 			'' => __('Normal', 'elementor-pro'),
+		// 			'multiply' => 'Multiply',
+		// 			'screen' => 'Screen',
+		// 			'overlay' => 'Overlay',
+		// 			'darken' => 'Darken',
+		// 			'lighten' => 'Lighten',
+		// 			'color-dodge' => 'Color Dodge',
+		// 			'color-burn' => 'Color Burn',
+		// 			'hue' => 'Hue',
+		// 			'saturation' => 'Saturation',
+		// 			'color' => 'Color',
+		// 			'exclusion' => 'Exclusion',
+		// 			'luminosity' => 'Luminosity',
+		// 		],
+		// 		'conditions' => [
+		// 			'terms' => [
+		// 				[
+		// 					'name' => 'background_overlay',
+		// 					'value' => 'yes',
+		// 				],
+		// 			],
+		// 		],
+		// 		'selectors' => [
+		// 			'{{WRAPPER}} .elementor-background-overlay' => 'mix-blend-mode: {{VALUE}}',
+		// 		],
+		// 	]
+		// );
 		$repeater->add_responsive_control(
 			'slides_margin',
 			[
@@ -621,11 +684,24 @@ class Slider extends \Elementor\Widget_Base
 				'options' => [
 					'' => __('Default', 'elementor'),
 				] + $slides_to_show,
+				// 'responsive' =>[
+				// 	'320'=>[
+				// 		'' => __('Default', 'elementor'),
+				// 	] + $slides_to_show,
+				// ],
 				'frontend_available' => true,
 			]
 		);
 
-		// $this->add_responsive_control(
+		$this->add_responsive_control(
+			'responsive_class',
+			[
+			'label' => __('Responsive Class', 'elementor-pro'),
+			'type' => \Elementor\Controls_Manager::SWITCHER,
+			'default' => 'yes',
+			'frontend_available' => true,
+			]
+		);
 		//slideby
 		$this->add_control(
 			'slides_to_scroll',
@@ -652,6 +728,7 @@ class Slider extends \Elementor\Widget_Base
 				],
 			]
 		);
+		
 		//loop
 		$this->add_control(
 			'infinite',
@@ -676,6 +753,26 @@ class Slider extends \Elementor\Widget_Base
 			'Divider3',
 			[
 				'type' => \Elementor\Controls_Manager::DIVIDER,
+			]
+		);
+		//video
+		$this->add_control(
+			'slide_video',
+			[
+				'label' => __('video', 'elementor-pro'),
+				'type' => \Elementor\Controls_Manager::SWITCHER,
+				'default' => 'yes',
+				'frontend_available' => true,
+			]
+		);
+		//mousedrag
+		$this->add_control(
+			'slide_merge',
+			[
+				'label' => __('Merge', 'elementor-pro'),
+				'type' => \Elementor\Controls_Manager::SWITCHER,
+				'default' => 'yes',
+				'frontend_available' => true,
 			]
 		);
 		//mousedrag
@@ -871,7 +968,7 @@ class Slider extends \Elementor\Widget_Base
 				],
 			]
 		);
-
+		
 		$this->end_controls_section();
 
 		//style section
@@ -911,6 +1008,22 @@ class Slider extends \Elementor\Widget_Base
 				],
 				'selectors' => [
 					'{{WRAPPER}} .owl-slide-contents' => 'max-width: {{SIZE}}{{UNIT}};',
+				],
+			]
+		);
+		$this->add_control(
+			'content_animation',
+			[
+				'label' => __( 'Content Animation', 'elementor-pro' ),
+				'type' => Controls_Manager::SELECT,
+				'default' => 'fadeInUp',
+				'options' => [
+					'' => __( 'None', 'elementor-pro' ),
+					'fadeInDown' => __( 'Down', 'elementor-pro' ),
+					'fadeInUp' => __( 'Up', 'elementor-pro' ),
+					'fadeInRight' => __( 'Right', 'elementor-pro' ),
+					'fadeInLeft' => __( 'Left', 'elementor-pro' ),
+					'zoomIn' => __( 'Zoom', 'elementor-pro' ),
 				],
 			]
 		);
@@ -1376,8 +1489,9 @@ class Slider extends \Elementor\Widget_Base
 		);
 
 		$this->end_controls_tab();
-
+		
 		$this->end_controls_tabs();
+		
 
 		$this->end_controls_section();
 		$this->start_controls_section(
@@ -1385,45 +1499,12 @@ class Slider extends \Elementor\Widget_Base
 			[
 				'label' => __('Navigation', 'elementor-pro'),
 				'tab' => Controls_Manager::TAB_STYLE,
-				'condition' => [
-					'navigation' => ['arrows', 'dots', 'both'],
-				],
 			]
 		);
-
-		$this->add_control(
-			'heading_style_arrows',
-			[
-				'label' => __('Arrows', 'elementor-pro'),
-				'type' => Controls_Manager::HEADING,
-				'separator' => 'before',
-				'condition' => [
-					'navigation' => ['arrows', 'both'],
-				],
-			]
-		);
-
-		$this->add_control(
-			'arrows_position',
-			[
-				'label' => __('Arrows Position', 'elementor-pro'),
-				'type' => Controls_Manager::SELECT,
-				'default' => 'inside',
-				'options' => [
-					'inside' => __('Inside', 'elementor-pro'),
-					'outside' => __('Outside', 'elementor-pro'),
-				],
-				'prefix_class' => 'elementor-arrows-position-',
-				'condition' => [
-					'navigation' => ['arrows', 'both'],
-				],
-			]
-		);
-
 		$this->add_control(
 			'arrows_size',
 			[
-				'label' => __('Arrows Size', 'elementor-pro'),
+				'label' => __( 'Arrows Size', 'elementor-pro' ),
 				'type' => Controls_Manager::SLIDER,
 				'range' => [
 					'px' => [
@@ -1432,61 +1513,26 @@ class Slider extends \Elementor\Widget_Base
 					],
 				],
 				'selectors' => [
-					'{{WRAPPER}} .elementor-owl-button' => 'font-size: {{SIZE}}{{UNIT}}',
+					'{{WRAPPER}} .owl-carousel .owl-nav span' => 'font-size: {{SIZE}}{{UNIT}}',
 				],
-				'condition' => [
-					'navigation' => ['arrows', 'both'],
-				],
+				
 			]
 		);
-
 		$this->add_control(
 			'arrows_color',
 			[
-				'label' => __('Arrows Color', 'elementor-pro'),
+				'label' => __( 'Arrows Color', 'elementor-pro' ),
 				'type' => Controls_Manager::COLOR,
 				'selectors' => [
-					'{{WRAPPER}} .elementor-owl-button' => 'color: {{VALUE}}',
+					'{{WRAPPER}} .owl-carousel .owl-nav span' => 'color: {{VALUE}}',
 				],
-				'condition' => [
-					'navigation' => ['arrows', 'both'],
-				],
+				
 			]
 		);
-
-		$this->add_control(
-			'heading_style_dots',
-			[
-				'label' => __('Dots', 'elementor-pro'),
-				'type' => Controls_Manager::HEADING,
-				'separator' => 'before',
-				'condition' => [
-					'navigation' => ['dots', 'both'],
-				],
-			]
-		);
-
-		$this->add_control(
-			'dots_position',
-			[
-				'label' => __('Dots Position', 'elementor-pro'),
-				'type' => Controls_Manager::SELECT,
-				'default' => 'inside',
-				'options' => [
-					'outside' => __('Outside', 'elementor-pro'),
-					'inside' => __('Inside', 'elementor-pro'),
-				],
-				'prefix_class' => 'elementor-pagination-position-',
-				'condition' => [
-					'navigation' => ['dots', 'both'],
-				],
-			]
-		);
-
 		$this->add_control(
 			'dots_size',
 			[
-				'label' => __('Dots Size', 'elementor-pro'),
+				'label' => __( 'Dots Size', 'elementor-pro' ),
 				'type' => Controls_Manager::SLIDER,
 				'range' => [
 					'px' => [
@@ -1494,32 +1540,50 @@ class Slider extends \Elementor\Widget_Base
 						'max' => 15,
 					],
 				],
-				// 'selectors' => [
-				// 	'{{WRAPPER}} .swiper-pagination-bullet' => 'height: {{SIZE}}{{UNIT}}; width: {{SIZE}}{{UNIT}}',
-				// 	'{{WRAPPER}} .swiper-container-horizontal .swiper-pagination-progressbar' => 'height: {{SIZE}}{{UNIT}}',
-				// 	'{{WRAPPER}} .swiper-pagination-fraction' => 'font-size: {{SIZE}}{{UNIT}}',
-				// ],
-				'condition' => [
-					'navigation' => ['dots', 'both'],
+				'selectors' => [
+					'{{WRAPPER}} .owl-carousel .owl-dot' => 'height: {{SIZE}}{{UNIT}}; width: {{SIZE}}{{UNIT}}'
 				],
 			]
 		);
-
 		$this->add_control(
 			'dots_color',
 			[
-				'label' => __('Dots Color', 'elementor-pro'),
+				'label' => __( 'Dots Color', 'elementor-pro' ),
 				'type' => Controls_Manager::COLOR,
 				'selectors' => [
-					'{{WRAPPER}} .owl-dot .active' => 'background-color: {{VALUE}};',
+					// '{{WRAPPER}} .owl-carousel .owl-dot' => 'background-color: {{VALUE}};',
+					'{{WRAPPER}} .owl-carousel .owl-dot' => 'background-color: {{VALUE}};',
 				],
-				'condition' => [
-					'navigation' => ['dots', 'both'],
-				],
+				
 			]
 		);
-
+		$this->add_control(
+			'dots_border_radius',
+			[
+				'label' => __('Dots Border Radius', 'elementor-pro'),
+				'type' => Controls_Manager::SLIDER,
+				'range' => [
+					'px' => [
+						'min' => 0,
+						'max' => 100,
+					],
+				],
+				'selectors' => [
+					'{{WRAPPER}} .owl-carousel .owl-dot' => 'border-radius: {{SIZE}}{{UNIT}};',
+				],
+				'separator' => 'after',
+			]
+		);
+		$this->add_group_control(
+			\Elementor\Group_Control_Border::get_type(),
+			[
+				'name' => 'border',
+				'selector' => '{{WRAPPER}} .owl-carousel .owl-dot',
+				'separator' => 'before',
+			]
+		);
 		$this->end_controls_section();
+		
 	}
 
 	protected function render()
@@ -1614,6 +1678,18 @@ class Slider extends \Elementor\Widget_Base
 								} else {
 									echo 'false';
 								} ?>,
+			"video":<?php if ($settings['slide_video'] == 'yes') {
+							echo 'true';
+						} else {
+							echo 'false';
+						}
+						?>,
+			"merge":<?php if ($settings['slide_merge'] == 'yes') {
+					echo 'true';
+				} else {
+					echo 'false';
+				}
+			?>,
 			"slideTransition": <?php switch ($settings['slide_transition']) {
 									case "linear":
 										echo '"linear"';
@@ -1634,37 +1710,40 @@ class Slider extends \Elementor\Widget_Base
 									default:
 										echo '"linear"';
 								} ?>,
-			"responsiveClass":true,
+			"responsiveClass":<?php if ($settings['responsive_class'] == 'yes') {
+							echo 'true';
+						} else {
+							echo 'false';
+						}
+						?>,
+
 			"responsive":{
-				"0":{
-					"items":1,
-					"nav":true
+				"320":{
+					"items":<?php echo $settings['slides_to_show'] ?>
 				},
-				"600":{
-					"items":3,
-					"nav":false
+				"768":{
+					"items":<?php echo $settings['slides_to_show'] ?>
 				},
-				"1000":{
-					"items":5,
-					"nav":true,
-					"loop":false
+				"1024":{
+					"items":<?php echo $settings['slides_to_show'] ?>
 				}
 			}
-								
-
 			
 		}'>
 			<?php
 
 			foreach ($settings['slides'] as $slide) {
 			?>
-				<div class="owl-image" style="background-image: url('<?php echo $slide['background_image']['url'] ?>');">
+				<div class="owl-image" style="background-image: url('<?php echo $slide['background_image']['url'] ?>');"> 
+
+					
 					<?php
 					if ('yes' === $slide['background_overlay']) {
 						echo '<div class="elementor-background-overlay"></div>';
 					}
-					echo '<div class="owl-slide-inner">';
-					echo '<div class="owl-slide-contents">';
+					echo '<div class="owl-slide-inner">';?>
+					<div class="owl-slide-contents" data-animation="<?php echo $settings['content_animation'];?>">
+					<?php
 					if ($slide['heading']) {
 						echo '<div class="elementor-slide-heading">' . $slide['heading'] . '</div>';
 					}
@@ -1680,7 +1759,9 @@ class Slider extends \Elementor\Widget_Base
 					$slides_count = count($settings['slides']);
 					echo '</div>
 					</div>';
+					
 					?>
+					
 				</div>
 
 
